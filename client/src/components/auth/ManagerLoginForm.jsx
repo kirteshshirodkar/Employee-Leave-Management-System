@@ -1,11 +1,25 @@
 import { Link } from "react-router-dom";
-
+import { login } from "../../api/authApi";
+import { saveToken } from "../../services/tokenService";
 import AuthCard from "./AuthCard";
 import Input from "../ui/Input";
 import PasswordInput from "../ui/PasswordInput";
 import Button from "../ui/Button";
 
 const ManagerLoginForm = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await managerLogin(formData);
+
+      saveToken(response.data.token);
+
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <AuthCard
       title="Manager Portal"
@@ -25,7 +39,6 @@ const ManagerLoginForm = () => {
       }
     >
       <form className="space-y-5">
-
         <Input
           label="Manager Email"
           type="email"
@@ -48,10 +61,7 @@ const ManagerLoginForm = () => {
           </Link>
         </div>
 
-        <Button>
-          Login as Manager
-        </Button>
-
+        <Button>Login as Manager</Button>
       </form>
     </AuthCard>
   );
