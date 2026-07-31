@@ -1,33 +1,82 @@
-import { Link } from "react-router-dom";
-import { login } from "../../api/authApi";
-import { saveToken } from "../../services/tokenService";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 import AuthCard from "./AuthCard";
+
 import Input from "../ui/Input";
 import PasswordInput from "../ui/PasswordInput";
 import Button from "../ui/Button";
 
+import { managerLogin } from "../../api/authApi";
+import { saveToken } from "../../services/tokenService";
+
+import {
+  notifySuccess,
+  notifyError,
+  notifyLoading,
+  dismissToast,
+} from "../../utils/toast";
+
 const ManagerLoginForm = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.username || !formData.password) {
+      notifyError("Please fill all fields.");
+      return;
+    }
+
+    const toastId = notifyLoading("Signing in...");
 
     try {
       const response = await managerLogin(formData);
 
+      dismissToast(toastId);
+
       saveToken(response.data.token);
 
-      console.log(response.data);
-    } catch (err) {
-      console.log(err);
+      notifySuccess(response.data.message);
+
+      setTimeout(() => {
+        navigate("/manager/dashboard");
+      }, 1000);
+
+    } catch (error) {
+      dismissToast(toastId);
+
+      const data = error.response?.data;
+
+      if (data?.errors) {
+        data.errors.forEach((err) => notifyError(err.msg));
+      } else {
+        notifyError(data?.message || "Manager login failed.");
+      }
     }
   };
+
   return (
     <AuthCard
-      title="Manager Portal"
+      title="Manager Login"
       subtitle="Sign in to manage employee leave requests"
       footer={
         <div className="space-y-3 text-center">
           <p className="text-gray-600">
             Employee?
+
             <Link
               to="/"
               className="ml-2 font-semibold text-blue-600 hover:underline"
@@ -38,30 +87,29 @@ const ManagerLoginForm = () => {
         </div>
       }
     >
-      <form className="space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-5"
+      >
         <Input
-          label="Manager Email"
-          type="email"
-          name="email"
-          placeholder="manager@company.com"
+          label="Manager Username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          placeholder="manager@gcu.in"
         />
 
         <PasswordInput
           label="Password"
           name="password"
+          value={formData.password}
+          onChange={handleChange}
           placeholder="Enter password"
         />
 
-        <div className="flex justify-end">
-          <Link
-            to="/forgot-password"
-            className="text-sm font-medium text-blue-600 hover:underline"
-          >
-            Forgot Password?
-          </Link>
-        </div>
-
-        <Button>Login as Manager</Button>
+        <Button type="submit">
+          Sign In
+        </Button>
       </form>
     </AuthCard>
   );

@@ -3,11 +3,13 @@ import express from "express";
 import {
   register,
   login,
+  managerLogin,
 } from "../controllers/auth.controller.js";
 
 import {
   registerValidator,
   loginValidator,
+  managerLoginValidator,
 } from "../validators/auth.validator.js";
 
 import validate from "../middleware/validate.middleware.js";
@@ -35,5 +37,12 @@ router.get("/me", protect, (req, res) => {
     employee: req.user,
   });
 });
+
+router.post(
+  "/manager/login",
+  managerLoginValidator,
+  validate,
+  managerLogin
+);
 
 export default router;

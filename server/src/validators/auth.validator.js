@@ -8,9 +8,7 @@ export const registerValidator = [
     .isLength({ min: 3, max: 30 })
     .withMessage("Username must be between 3 and 30 characters")
     .matches(/^[a-zA-Z0-9_]+$/)
-    .withMessage(
-      "Username can only contain letters, numbers, and underscores"
-    ),
+    .withMessage("Username can only contain letters, numbers, and underscores"),
 
   body("password")
     .trim()
@@ -21,13 +19,13 @@ export const registerValidator = [
 ];
 
 export const loginValidator = [
-  body("username")
-    .trim()
-    .notEmpty()
-    .withMessage("Username is required"),
+  body("username").trim().notEmpty().withMessage("Username is required"),
 
-  body("password")
-    .trim()
-    .notEmpty()
-    .withMessage("Password is required"),
+  body("password").trim().notEmpty().withMessage("Password is required"),
+];
+
+export const managerLoginValidator = [
+  body("username").trim().notEmpty().withMessage("Username is required"),
+
+  body("password").trim().notEmpty().withMessage("Password is required"),
 ];

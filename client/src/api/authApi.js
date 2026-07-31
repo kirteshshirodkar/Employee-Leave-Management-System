@@ -9,5 +9,7 @@ export const login = (data) =>
 export const managerLogin = (data) =>
     api.post("/auth/manager/login", data);
 
+
+
 export const getCurrentUser = () =>
     api.get("/auth/me");

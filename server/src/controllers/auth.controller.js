@@ -19,3 +19,14 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
+
+export const managerLogin = async (req, res, next) => {
+  try {
+    const result = await authService.managerLogin(req.body);
+
+    res.status(200).json(result);
+
+  } catch (error) {
+    next(error);
+  }
+};

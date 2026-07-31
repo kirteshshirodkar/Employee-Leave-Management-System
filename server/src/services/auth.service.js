@@ -3,7 +3,7 @@ import prisma from "../config/prisma.js";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 
 import { generateToken } from "../utils/generateToken.js";
-import AppError from "../utils/AppError.js"
+import AppError from "../utils/AppError.js";
 
 /*
     REGISTER
@@ -56,11 +56,15 @@ export const login = async ({ username, password }) => {
     throw new AppError("Invalid username or password", 401);
   }
 
+  if (employee.role === "MANAGER") {
+    throw new AppError("Please login through the manager portal.", 403);
+  }
+
   const passwordMatched = await comparePassword(password, employee.password);
 
   if (!passwordMatched) {
-  throw new AppError("Invalid username or password", 401);
-}
+    throw new AppError("Invalid username or password", 401);
+  }
 
   const token = generateToken(employee);
 
@@ -77,6 +81,42 @@ export const login = async ({ username, password }) => {
       username: employee.username,
 
       role: employee.role,
+    },
+  };
+};
+
+// manager login
+export const managerLogin = async ({ username, password }) => {
+  const manager = await prisma.employee.findUnique({
+    where: {
+      username,
+    },
+  });
+
+  if (!manager) {
+    throw new AppError("Invalid username or password", 401);
+  }
+
+  if (manager.role !== "MANAGER") {
+    throw new AppError("Please login through the employee portal.", 403);
+  }
+
+  const passwordMatched = await comparePassword(password, manager.password);
+
+  if (!passwordMatched) {
+    throw new AppError("Invalid username or password", 401);
+  }
+
+  const token = generateToken(manager);
+
+  return {
+    success: true,
+    message: "Manager login successful",
+    token,
+    manager: {
+      id: manager.id,
+      username: manager.username,
+      role: manager.role,
     },
   };
 };
