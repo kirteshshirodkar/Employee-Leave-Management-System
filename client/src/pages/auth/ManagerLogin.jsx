@@ -1,5 +1,5 @@
-import AuthLayout from "../layouts/AuthLayout";
-import ManagerLoginForm from "../components/auth/ManagerLoginForm";
+import AuthLayout from "../../layouts/Authlayout";
+import ManagerLoginForm from "../../components/auth/ManagerLoginForm";
 
 const ManagerLogin = () => {
   return (

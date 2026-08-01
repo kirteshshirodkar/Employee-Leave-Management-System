@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import ManagerLogin from "../pages/ManagerLogin";
-import Dashboard from "../pages/Dashboard";
+import Login from "../pages/auth/Login"
+import Register from "../pages/auth/Register";
+import ManagerLogin from "../pages/auth/ManagerLogin";
+import Dashboard from "../pages/employee/Dashboard";
 import ManagerDashboard from "../pages/ManagerDashboard";
 
 const AppRoutes = () => {
