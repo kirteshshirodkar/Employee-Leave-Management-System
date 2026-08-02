@@ -11,7 +11,7 @@ const menuItems = [
   {
     name: "Apply Leave",
     icon: CalendarPlus,
-    path: "/apply-leave",
+    action: "applyLeave",
   },
   {
     name: "Leave History",
@@ -20,7 +20,7 @@ const menuItems = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ onApplyLeave }) => {
   return (
     <aside className="w-72 bg-white border-r border-slate-200 flex flex-col">
       {/* Logo */}
@@ -39,21 +39,47 @@ const Sidebar = () => {
         {menuItems.map((item) => {
           const Icon = item.icon;
 
+          // Apply Leave opens modal
+          if (item.action === "applyLeave") {
+            return (
+              <button
+                key={item.name}
+                onClick={onApplyLeave}
+                className="
+            flex
+            w-full
+            items-center
+            gap-4
+            rounded-xl
+            px-5
+            py-3
+            text-slate-600
+            transition-all
+            duration-200
+            hover:bg-slate-100
+          "
+              >
+                <Icon size={20} />
+                <span className="font-medium">{item.name}</span>
+              </button>
+            );
+          }
+
+          // Normal navigation
           return (
             <NavLink
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-4 px-5 py-3 rounded-xl transition-all duration-200
-                                ${
-                                  isActive
-                                    ? "bg-slate-200 text-blue-600 shadow-md"
-                                    : "text-slate-600 hover:bg-slate-100"
-                                }`
+                `flex items-center gap-4 rounded-xl px-5 py-3 transition-all duration-200
+          ${
+            isActive
+              ? "bg-slate-200 text-blue-600 shadow-md"
+              : "text-slate-600 hover:bg-slate-100"
+          }`
               }
             >
               <Icon size={20} />
-
               <span className="font-medium">{item.name}</span>
             </NavLink>
           );

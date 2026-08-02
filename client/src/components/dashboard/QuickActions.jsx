@@ -1,7 +1,7 @@
 import { CalendarPlus2, FileText } from "lucide-react";
 import QuickActionCard from "./QuickActionCard";
 
-const QuickActions = () => {
+const QuickActions = ({ onApplyLeave }) => {
     return (
         <section className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
 
@@ -9,7 +9,7 @@ const QuickActions = () => {
                 title="Apply Leave"
                 description="Submit a new leave request in just a few clicks."
                 icon={CalendarPlus2}
-                to="/apply-leave"
+                onClick={onApplyLeave}
                 iconBg="bg-blue-100"
                 iconColor="text-blue-600"
                 arrowBg="bg-blue-600"
