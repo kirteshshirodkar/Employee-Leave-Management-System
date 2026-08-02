@@ -1,0 +1,75 @@
+import { LayoutDashboard, CalendarPlus, History, LogOut } from "lucide-react";
+
+import { NavLink } from "react-router-dom";
+
+const menuItems = [
+  {
+    name: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/dashboard",
+  },
+  {
+    name: "Apply Leave",
+    icon: CalendarPlus,
+    path: "/apply-leave",
+  },
+  {
+    name: "Leave History",
+    icon: History,
+    path: "/leave-history",
+  },
+];
+
+const Sidebar = () => {
+  return (
+    <aside className="w-72 bg-white border-r border-slate-200 flex flex-col">
+      {/* Logo */}
+
+      <div className="h-20 flex items-center px-8 border-b border-slate-200">
+        <div>
+          <h1 className="text-2xl font-bold text-blue-600">LeaveTrack</h1>
+
+          <p className="text-sm text-slate-500">Employee Portal</p>
+        </div>
+      </div>
+
+      {/* Navigation */}
+
+      <nav className="flex-1 px-4 py-6 space-y-2">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `flex items-center gap-4 px-5 py-3 rounded-xl transition-all duration-200
+                                ${
+                                  isActive
+                                    ? "bg-slate-200 text-blue-600 shadow-md"
+                                    : "text-slate-600 hover:bg-slate-100"
+                                }`
+              }
+            >
+              <Icon size={20} />
+
+              <span className="font-medium">{item.name}</span>
+            </NavLink>
+          );
+        })}
+      </nav>
+
+      {/* Logout */}
+
+      <div className="p-5 border-t border-slate-200">
+        <button className="flex items-center gap-3 text-red-500 hover:text-red-600 transition">
+          <LogOut size={20} />
+          Logout
+        </button>
+      </div>
+    </aside>
+  );
+};
+
+export default Sidebar;

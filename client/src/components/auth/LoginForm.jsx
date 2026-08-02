@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../hooks/useAuth";
 import { login } from "../../api/authApi";
 import { saveToken } from "../../services/tokenService";
 
@@ -20,7 +19,7 @@ import Button from "../ui/Button";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-
+  const { setUser } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -47,6 +46,9 @@ const LoginForm = () => {
       dismissToast(toastId);
 
       saveToken(response.data.token);
+
+      // Store logged-in employee
+      setUser(response.data.employee);
 
       notifySuccess(response.data.message || "Login successful!");
 
