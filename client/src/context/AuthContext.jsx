@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { removeToken } from "../services/tokenService";
 
 export const AuthContext = createContext();
 
@@ -15,8 +16,8 @@ export default function AuthProvider({ children }) {
     };
 
     const logout = () => {
+        removeToken();
         localStorage.removeItem("user");
-        localStorage.removeItem("token");
         setUser(null);
     };
 

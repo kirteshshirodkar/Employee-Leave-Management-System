@@ -2,16 +2,15 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { getToken } from "../services/tokenService";
 
-const ProtectedRoute = () => {
+const GuestRoute = () => {
     const { user } = useAuth();
     const token = getToken();
 
-    // Not logged in
-    if (!token || !user) {
-        return <Navigate to="/" replace />;
+    if (token && user) {
+        return <Navigate to="/dashboard" replace />;
     }
 
     return <Outlet />;
 };
 
-export default ProtectedRoute;
+export default GuestRoute;

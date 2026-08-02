@@ -1,7 +1,7 @@
 import { LayoutDashboard, CalendarPlus, History, LogOut } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
-
+import { useAuth } from "../../hooks/useAuth";
 const menuItems = [
   {
     name: "Dashboard",
@@ -21,6 +21,14 @@ const menuItems = [
 ];
 
 const Sidebar = ({ onApplyLeave }) => {
+  const { logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+
+    notifySuccess("Logged out successfully.");
+
+    navigate("/", { replace: true });
+  };
   return (
     <aside className="w-72 bg-white border-r border-slate-200 flex flex-col">
       {/* Logo */}
@@ -89,9 +97,24 @@ const Sidebar = ({ onApplyLeave }) => {
       {/* Logout */}
 
       <div className="p-5 border-t border-slate-200">
-        <button className="flex items-center gap-3 text-red-500 hover:text-red-600 transition">
+        <button
+          onClick={handleLogout}
+          className="
+        flex
+        w-full
+        items-center
+        gap-3
+        rounded-xl
+        px-4
+        py-3
+        text-red-500
+        transition
+        hover:bg-red-50
+        hover:text-red-600
+    "
+        >
           <LogOut size={20} />
-          Logout
+          <span className="font-medium">Logout</span>
         </button>
       </div>
     </aside>
