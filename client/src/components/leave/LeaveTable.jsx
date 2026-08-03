@@ -1,7 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import EmptyState from "./EmptyState";
-
+import { useState } from "react";
+import DocumentPreviewModal from "./DocumentPreviewModal";
 import LeaveTableRow from "./LeaveTableRow";
 
 const demoLeaves = [
@@ -51,15 +52,18 @@ const LeaveTable = ({
   onApplyLeave,
 }) => {
   const displayedLeaves = maxRows ? leaves.slice(0, maxRows) : leaves;
- if (displayedLeaves.length === 0) {
-  return (
-    <EmptyState
-      title={emptyTitle}
-      description={emptyDescription}
-      onButtonClick={onApplyLeave}
-    />
-  );
-}
+  if (displayedLeaves.length === 0) {
+    return (
+      <EmptyState
+        title={emptyTitle}
+        description={emptyDescription}
+        onButtonClick={onApplyLeave}
+      />
+    );
+  }
+
+  const [selectedDocument, setSelectedDocument] = useState(null);
+
   return (
     <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
       {showHeader && (
@@ -118,11 +122,17 @@ const LeaveTable = ({
                 key={leave.id}
                 leave={leave}
                 showDocument={showDocument}
+                onViewDocument={(document) => setSelectedDocument(document)}
               />
             ))}
           </tbody>
         </table>
       </div>
+      <DocumentPreviewModal
+        isOpen={!!selectedDocument}
+        document={selectedDocument}
+        onClose={() => setSelectedDocument(null)}
+      />
     </section>
   );
 };

@@ -1,18 +1,14 @@
 import { CalendarDays, FileText } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 
-const LeaveTableRow = ({ leave, showDocument = false }) => {
+const LeaveTableRow = ({ leave, showDocument = false, onViewDocument }) => {
   return (
     <tr className="transition-colors duration-200 hover:bg-slate-50">
-
       {/* Leave Dates */}
       <td className="px-6 py-5">
         <div className="flex items-start gap-4">
           <div className="rounded-xl bg-blue-50 p-2">
-            <CalendarDays
-              size={18}
-              className="text-blue-600"
-            />
+            <CalendarDays size={18} className="text-blue-600" />
           </div>
 
           <div>
@@ -28,9 +24,7 @@ const LeaveTableRow = ({ leave, showDocument = false }) => {
       </td>
 
       {/* Reason */}
-      <td className="px-6 py-5 text-slate-700">
-        {leave.reason}
-      </td>
+      <td className="px-6 py-5 text-slate-700">{leave.reason}</td>
 
       {/* Status */}
       <td className="px-6 py-5">
@@ -40,9 +34,7 @@ const LeaveTableRow = ({ leave, showDocument = false }) => {
       {/* Manager Remarks */}
       <td className="px-6 py-5">
         {leave.remarks ? (
-          <p className="max-w-xs text-sm text-slate-600">
-            {leave.remarks}
-          </p>
+          <p className="max-w-xs text-sm text-slate-600">{leave.remarks}</p>
         ) : (
           <span className="text-slate-400">—</span>
         )}
@@ -72,6 +64,7 @@ const LeaveTableRow = ({ leave, showDocument = false }) => {
                 hover:bg-blue-50
                 hover:text-blue-600
               "
+              onClick={() => onViewDocument(leave.document)}
             >
               <FileText size={16} />
               View
