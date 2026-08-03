@@ -13,7 +13,14 @@ enum Role {
   ADMIN
 }
 
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model Employee {
+
   id         String   @id @default(cuid())
 
   username   String   @unique
@@ -24,7 +31,36 @@ model Employee {
 
   isActive   Boolean  @default(true)
 
+  leaves     Leave[]
+
   createdAt  DateTime @default(now())
 
   updatedAt  DateTime @updatedAt
+}
+
+model Leave {
+
+  id          String      @id @default(cuid())
+
+  employeeId  String
+
+  employee    Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  reason      String
+
+  startDate   DateTime
+
+  endDate     DateTime
+
+  totalDays   Int
+
+  status      LeaveStatus @default(PENDING)
+
+  remarks     String?
+
+  documentUrl String?
+
+  createdAt   DateTime @default(now())
+
+  updatedAt   DateTime @updatedAt
 }
