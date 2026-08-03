@@ -1,7 +1,7 @@
 import DashboardLayout from "../../layouts/DashboardLayout";
 import WelcomeBanner from "../../components/dashboard/WelcomeBanner";
 import QuickActions from "../../components/dashboard/QuickActions";
-import LeaveHistoryTable from "../../components/dashboard/LeaveHistoryTable";
+import LeaveTable from "../../components/leave/LeaveTable";
 import ApplyLeaveModal from "../../components/leave/ApplyLeaveModal";
 import { useState } from "react";
 
@@ -16,7 +16,15 @@ const Dashboard = () => {
         <QuickActions onApplyLeave={() => setOpenModal(true)} />
         <ApplyLeaveModal open={openModal} onClose={() => setOpenModal(false)} />
 
-        <LeaveHistoryTable />
+        <LeaveTable
+          
+          maxRows={3}
+          showHeader
+          showViewAll
+          emptyTitle="No Recent Leave Requests"
+          emptyDescription="Your recent leave requests will appear here once you submit one."
+          onApplyLeave={() => setOpenModal(true)}
+        />
       </div>
     </DashboardLayout>
   );
