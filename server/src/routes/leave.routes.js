@@ -7,13 +7,14 @@ import {
   getLeaveStats,
 } from "../controllers/leave.controller.js";
 
-import { protect } from "../middleware/auth.middleware.js";
+import protect from "../middleware/auth.middleware.js";
 import validate from "../middleware/validate.middleware.js";
-import { applyLeaveSchema } from "../validators/leave.validator.js";
+import { applyLeaveValidator } from "../validators/leave.validator.js";
+
 const router = express.Router();
 
 // Apply for leave
-router.post("/", protect, validate(applyLeaveSchema), applyLeave);
+router.post("/", protect, applyLeaveValidator, validate, applyLeave);
 
 // Get logged-in employee leaves
 router.get("/", protect, getMyLeaves);

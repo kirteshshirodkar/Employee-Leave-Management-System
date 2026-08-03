@@ -1,25 +1,28 @@
-import { z } from "zod";
+import { body } from "express-validator";
 
-export const applyLeaveSchema = z
-  .object({
-    reason: z
-      .string()
-      .trim()
-      .min(5, "Reason must be at least 5 characters.")
-      .max(500, "Reason cannot exceed 500 characters."),
+export const applyLeaveValidator = [
+  body("reason")
+    .trim()
+    .notEmpty()
+    .withMessage("Reason is required.")
+    .isLength({ min: 5 })
+    .withMessage("Reason must be at least 5 characters."),
 
-    startDate: z
-      .string()
-      .min(1, "Start date is required."),
+  body("startDate")
+    .notEmpty()
+    .withMessage("Start date is required.")
+    .isISO8601()
+    .withMessage("Invalid start date."),
 
-    endDate: z
-      .string()
-      .min(1, "End date is required."),
-  })
-  .refine(
-    (data) => new Date(data.endDate) >= new Date(data.startDate),
-    {
-      message: "End date cannot be before start date.",
-      path: ["endDate"],
-    }
-  );
+  body("endDate")
+    .notEmpty()
+    .withMessage("End date is required.")
+    .isISO8601()
+    .withMessage("Invalid end date.")
+    .custom((endDate, { req }) => {
+      if (new Date(endDate) < new Date(req.body.startDate)) {
+        throw new Error("End date cannot be before start date.");
+      }
+      return true;
+    }),
+];
