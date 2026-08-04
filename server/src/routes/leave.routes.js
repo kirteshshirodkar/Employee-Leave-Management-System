@@ -23,6 +23,9 @@ router.post(
   applyLeave,
 );
 
+// leaves stats
+router.get("/stats", protect, getLeaveStats);
+
 // Get logged-in employee leaves
 router.get("/", protect, getMyLeaves);
 
@@ -32,7 +35,6 @@ router.get("/:id", protect, getLeaveById);
 // Cancel leave
 router.delete("/:id", protect, cancelLeave);
 
-// leaves stats
-router.get("/stats", protect, getLeaveStats);
+
 
 export default router;

@@ -5,7 +5,7 @@ const ApplyLeaveModal = ({
   open,
   onClose,
   onSubmitLeave,
-  submitting,
+  submitting = false,
 }) => {
   return (
     <Modal

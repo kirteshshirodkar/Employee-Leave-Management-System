@@ -13,3 +13,10 @@ export const getMyLeaves = async () => {
 
     return response.data;
 };
+
+// Get logged-in employee's leave statistics
+export const getLeaveStats = async () => {
+    const response = await api.get("/leaves/stats");
+
+    return response.data;
+};

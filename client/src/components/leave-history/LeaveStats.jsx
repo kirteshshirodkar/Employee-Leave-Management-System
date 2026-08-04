@@ -7,30 +7,22 @@ import {
 
 import StatCard from "./StatCard";
 
-const LeaveStats = ({ leaves = [] }) => {
-
-  const stats = {
-    pending: leaves.filter(
-      (leave) => leave.status === "PENDING"
-    ).length,
-
-    approved: leaves.filter(
-      (leave) => leave.status === "APPROVED"
-    ).length,
-
-    rejected: leaves.filter(
-      (leave) => leave.status === "REJECTED"
-    ).length,
-
-    total: leaves.length,
-  };
+const LeaveStats = ({
+  stats = {
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+    total: 0,
+  },
+  loading = false,
+}) => {
 
   return (
     <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
 
       <StatCard
         title="Pending Requests"
-        value={stats.pending}
+        value={loading ? "..." : stats.pending}
         subtitle="Awaiting manager approval"
         icon={Clock3}
         iconBg="bg-amber-100"
@@ -40,7 +32,7 @@ const LeaveStats = ({ leaves = [] }) => {
 
       <StatCard
         title="Approved"
-        value={stats.approved}
+        value={loading ? "..." : stats.approved}
         subtitle="Successfully approved"
         icon={CheckCircle2}
         iconBg="bg-emerald-100"
@@ -50,7 +42,7 @@ const LeaveStats = ({ leaves = [] }) => {
 
       <StatCard
         title="Rejected"
-        value={stats.rejected}
+        value={loading ? "..." : stats.rejected}
         subtitle="Requests declined"
         icon={XCircle}
         iconBg="bg-red-100"
@@ -60,7 +52,7 @@ const LeaveStats = ({ leaves = [] }) => {
 
       <StatCard
         title="Total Requests"
-        value={stats.total}
+        value={loading ? "..." : stats.total}
         subtitle="Leave requests submitted"
         icon={FileText}
         iconBg="bg-blue-100"

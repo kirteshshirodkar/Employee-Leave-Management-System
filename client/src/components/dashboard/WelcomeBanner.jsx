@@ -36,7 +36,7 @@ const WelcomeBanner = () => {
                     </p>
 
                     <h1 className="mt-3 text-4xl font-bold text-slate-900">
-                        Welcome back,
+                        Welcome,
                         <span className="text-blue-600">
                             {" "}
                             {user?.username || "Employee"}

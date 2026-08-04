@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import DashboardLayout from "../../layouts/DashboardLayout";
 
@@ -15,59 +15,53 @@ const LeaveHistory = () => {
 
   const {
     leaves,
+    stats,
     loading,
-    submitting,
-    error,
-    applyLeave,
+    statsLoading,
+    fetchLeaves,
+    fetchLeaveStats,
+    submitLeave,
   } = useLeave();
 
-  const handleOpenLeaveModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseLeaveModal = () => {
-    setOpenModal(false);
-  };
-
-  const handleSubmitLeave = async (leaveData) => {
-    await applyLeave(leaveData);
-
-    // Close modal after successful submission
-    setOpenModal(false);
-  };
+  useEffect(() => {
+    fetchLeaves();
+    fetchLeaveStats();
+  }, []);
 
   return (
     <DashboardLayout
-      onApplyLeave={handleOpenLeaveModal}
+      onApplyLeave={() => setOpenModal(true)}
     >
+
+      <ApplyLeaveModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        onSubmitLeave={submitLeave}
+      />
+
       <div className="space-y-8">
 
         <LeaveHistoryHeader />
 
+        {/* Leave Statistics */}
         <LeaveStats
-          leaves={leaves}
+          stats={stats}
+          loading={statsLoading}
         />
 
+        {/* Leave History */}
         <LeaveTable
           leaves={leaves}
           loading={loading}
-          error={error}
           showHeader={false}
           showViewAll={false}
           showDocument={true}
           emptyTitle="No Leave History"
           emptyDescription="Looks like you haven't submitted any leave requests yet."
-          onApplyLeave={handleOpenLeaveModal}
+          onApplyLeave={() => setOpenModal(true)}
         />
 
       </div>
-
-      <ApplyLeaveModal
-        open={openModal}
-        onClose={handleCloseLeaveModal}
-        onSubmitLeave={handleSubmitLeave}
-        submitting={submitting}
-      />
 
     </DashboardLayout>
   );

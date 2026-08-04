@@ -1,9 +1,11 @@
+import { useState } from "react";
+
 import DashboardLayout from "../../layouts/DashboardLayout";
 import WelcomeBanner from "../../components/dashboard/WelcomeBanner";
 import QuickActions from "../../components/dashboard/QuickActions";
 import LeaveTable from "../../components/leave/LeaveTable";
 import ApplyLeaveModal from "../../components/leave/ApplyLeaveModal";
-import { useState } from "react";
+
 import useLeave from "../../hooks/useLeave";
 
 const Dashboard = () => {
@@ -28,7 +30,7 @@ const Dashboard = () => {
   const handleSubmitLeave = async (leaveData) => {
     await applyLeave(leaveData);
 
-    // Close modal after successful API request
+    // Close modal after successful submission
     setOpenModal(false);
   };
 
@@ -38,12 +40,15 @@ const Dashboard = () => {
     >
       <div className="space-y-8">
 
+        {/* Welcome Banner */}
         <WelcomeBanner />
 
+        {/* Quick Actions */}
         <QuickActions
           onApplyLeave={handleOpenLeaveModal}
         />
 
+        {/* Apply Leave Modal */}
         <ApplyLeaveModal
           open={openModal}
           onClose={handleCloseLeaveModal}
@@ -51,6 +56,7 @@ const Dashboard = () => {
           submitting={submitting}
         />
 
+        {/* Recent Leave Requests */}
         <LeaveTable
           leaves={leaves}
           loading={loading}
