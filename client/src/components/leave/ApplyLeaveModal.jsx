@@ -2,25 +2,24 @@ import Modal from "../ui/Modal";
 import LeaveForm from "./LeaveForm";
 
 const ApplyLeaveModal = ({
-    open,
-    onClose,
+  open,
+  onClose,
+  onSubmitLeave,
+  submitting,
 }) => {
-
-    return (
-
-        <Modal
-            open={open}
-            onClose={onClose}
-            title="Apply for Leave"
-        >
-
-            <LeaveForm
-                onClose={onClose}
-            />
-
-        </Modal>
-
-    );
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Apply for Leave"
+    >
+      <LeaveForm
+        onClose={onClose}
+        onSubmitLeave={onSubmitLeave}
+        submitting={submitting}
+      />
+    </Modal>
+  );
 };
 
 export default ApplyLeaveModal;

@@ -3,72 +3,155 @@ import Input from "../ui/Input";
 import Button from "../ui/Button";
 import FileUpload from "./FileUpload";
 
-const LeaveForm = ({ onClose }) => {
+import {
+  notifySuccess,
+  notifyError,
+} from "../../utils/toast";
 
-    const [file, setFile] = useState(null);
+const LeaveForm = ({
+  onClose,
+  onSubmitLeave,
+  submitting,
+}) => {
+  const [file, setFile] = useState(null);
 
-    return (
+  const [formData, setFormData] = useState({
+    reason: "",
+    startDate: "",
+    endDate: "",
+  });
 
-        <form className="space-y-6">
+  const [error, setError] = useState("");
 
-            <Input
-                label="Leave Reason"
-                placeholder="Enter the reason for leave"
-            />
+  const handleChange = (event) => {
+    const { name, value } = event.target;
 
-            <div className="grid grid-cols-2 gap-5">
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-                <Input
-                    type="date"
-                    label="Start Date"
-                />
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-                <Input
-                    type="date"
-                    label="End Date"
-                />
+    setError("");
 
-            </div>
+    try {
+      await onSubmitLeave({
+        reason: formData.reason,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+      });
 
-            <FileUpload
-                file={file}
-                onChange={setFile}
-            />
+      // Success notification
+      notifySuccess("Leave request submitted successfully!");
 
-            <div className="flex justify-end gap-3 pt-2">
+      // Reset form
+      setFormData({
+        reason: "",
+        startDate: "",
+        endDate: "",
+      });
 
-                <button
-                    type="button"
-                    onClick={onClose}
-                    className="
-                        rounded-xl
-                        border
-                        border-slate-300
-                        px-6
-                        py-3
-                        font-medium
-                        hover:bg-slate-100
-                    "
-                >
+      setFile(null);
 
-                    Cancel
+    } catch (error) {
+      console.error("Apply leave error:", error);
 
-                </button>
+      const message =
+        error.response?.data?.message ||
+        "Failed to apply for leave.";
 
-                <Button
-                    type="submit"
-                    className="w-auto px-8"
-                >
+      // Toast notification
+      notifyError(message);
 
-                    Submit Request
+      // Inline error
+      setError(message);
+    }
+  };
 
-                </Button>
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6"
+    >
 
-            </div>
+      {/* Inline Error */}
+      {error && (
+        <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
+          {error}
+        </div>
+      )}
 
-        </form>
+      <Input
+        label="Leave Reason"
+        name="reason"
+        value={formData.reason}
+        onChange={handleChange}
+        placeholder="Enter the reason for leave"
+      />
 
-    );
+      <div className="grid grid-cols-2 gap-5">
+
+        <Input
+          type="date"
+          label="Start Date"
+          name="startDate"
+          value={formData.startDate}
+          onChange={handleChange}
+        />
+
+        <Input
+          type="date"
+          label="End Date"
+          name="endDate"
+          value={formData.endDate}
+          onChange={handleChange}
+        />
+
+      </div>
+
+      <FileUpload
+        file={file}
+        onChange={setFile}
+      />
+
+      <div className="flex justify-end gap-3 pt-2">
+
+        <button
+          type="button"
+          onClick={onClose}
+          disabled={submitting}
+          className="
+            rounded-xl
+            border
+            border-slate-300
+            px-6
+            py-3
+            font-medium
+            hover:bg-slate-100
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+          "
+        >
+          Cancel
+        </button>
+
+        <Button
+          type="submit"
+          disabled={submitting}
+          className="w-auto px-8"
+        >
+          {submitting
+            ? "Submitting..."
+            : "Submit Request"}
+        </Button>
+
+      </div>
+
+    </form>
+  );
 };
 
 export default LeaveForm;
