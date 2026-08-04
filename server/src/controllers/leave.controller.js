@@ -3,7 +3,11 @@ import * as leaveService from "../services/leave.service.js";
 // Apply Leave
 export const applyLeave = async (req, res, next) => {
   try {
-    const leave = await leaveService.applyLeave(req.user.id, req.body);
+    const leave = await leaveService.applyLeave(
+      req.user.id,
+      req.body,
+      req.file
+    );
 
     res.status(201).json({
       success: true,
@@ -63,16 +67,16 @@ export const cancelLeave = async (req, res, next) => {
   }
 };
 
-//Leave Stats
+// Leave Stats
 export const getLeaveStats = async (req, res, next) => {
-    try {
-        const stats = await leaveService.getLeaveStats(req.user.id);
+  try {
+    const stats = await leaveService.getLeaveStats(req.user.id);
 
-        res.status(200).json({
-            success: true,
-            data: stats,
-        });
-    } catch (error) {
-        next(error);
-    }
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    next(error);
+  }
 };

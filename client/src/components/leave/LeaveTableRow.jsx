@@ -2,7 +2,7 @@ import { CalendarDays, FileText } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 
 const formatDate = (date) => {
-  if (!date) return "";
+  if (!date) return "—";
 
   return new Date(date).toLocaleDateString("en-IN", {
     day: "2-digit",
@@ -16,14 +16,11 @@ const LeaveTableRow = ({
   showDocument = false,
   onViewDocument,
 }) => {
-
   return (
     <tr className="transition-colors duration-200 hover:bg-slate-50">
 
       {/* Leave Dates */}
-
       <td className="px-6 py-5">
-
         <div className="flex items-start gap-4">
 
           <div className="rounded-xl bg-blue-50 p-2">
@@ -34,70 +31,53 @@ const LeaveTableRow = ({
           </div>
 
           <div>
-
             <h4 className="font-medium text-slate-800">
-
               {formatDate(leave.startDate)}
               {" - "}
               {formatDate(leave.endDate)}
-
             </h4>
 
             <p className="text-sm text-slate-500">
-
-              {leave.totalDays}
-              {" "}
-              {leave.totalDays > 1 ? "days" : "day"}
-
+              {leave.totalDays}{" "}
+              {leave.totalDays === 1 ? "day" : "days"}
             </p>
-
           </div>
 
         </div>
-
       </td>
 
       {/* Reason */}
-
       <td className="px-6 py-5 text-slate-700">
-        {leave.reason}
+        {leave.reason || "—"}
       </td>
 
       {/* Status */}
-
       <td className="px-6 py-5">
         <StatusBadge status={leave.status} />
       </td>
 
       {/* Manager Remarks */}
-
       <td className="px-6 py-5">
 
         {leave.remarks ? (
-
           <p className="max-w-xs text-sm text-slate-600">
             {leave.remarks}
           </p>
-
         ) : (
-
           <span className="text-slate-400">
             —
           </span>
-
         )}
 
       </td>
 
       {/* Document */}
-
       {showDocument && (
-
         <td className="px-6 py-5">
 
           {leave.documentUrl ? (
-
             <button
+              type="button"
               className="
                 inline-flex
                 items-center
@@ -118,34 +98,28 @@ const LeaveTableRow = ({
                 hover:text-blue-600
               "
               onClick={() =>
-                onViewDocument(leave.documentUrl)
+                onViewDocument({
+                  url: leave.documentUrl,
+                  name: leave.documentName || "Supporting Document",
+                })
               }
             >
-
               <FileText size={16} />
 
               View
-
             </button>
-
           ) : (
-
             <span className="text-slate-400">
               —
             </span>
-
           )}
 
         </td>
-
       )}
 
       {/* Applied On */}
-
       <td className="whitespace-nowrap px-6 py-5 text-sm text-slate-600">
-
         {formatDate(leave.createdAt)}
-
       </td>
 
     </tr>

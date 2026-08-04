@@ -19,17 +19,13 @@ const LeaveTable = ({
 }) => {
   const [selectedDocument, setSelectedDocument] = useState(null);
 
-  const displayedLeaves = maxRows
-    ? leaves.slice(0, maxRows)
-    : leaves;
+  const displayedLeaves = maxRows ? leaves.slice(0, maxRows) : leaves;
 
   // Loading state
   if (loading) {
     return (
       <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-        <p className="text-center text-slate-500">
-          Loading leave history...
-        </p>
+        <p className="text-center text-slate-500">Loading leave history...</p>
       </section>
     );
   }
@@ -38,9 +34,7 @@ const LeaveTable = ({
   if (error) {
     return (
       <section className="rounded-3xl border border-red-200 bg-white p-8 shadow-sm">
-        <p className="text-center text-red-500">
-          {error}
-        </p>
+        <p className="text-center text-red-500">{error}</p>
       </section>
     );
   }
@@ -58,10 +52,8 @@ const LeaveTable = ({
 
   return (
     <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-
       {showHeader && (
         <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-
           <h2 className="text-2xl font-semibold text-slate-800">
             Leave History
           </h2>
@@ -89,73 +81,46 @@ const LeaveTable = ({
               <ArrowRight size={18} />
             </Link>
           )}
-
         </div>
       )}
 
       <div className="overflow-x-auto">
-
         <table className="min-w-full">
-
           <thead className="bg-slate-50">
-
             <tr className="text-left text-sm font-semibold text-slate-500">
+              <th className="px-6 py-4">Leave Dates</th>
 
-              <th className="px-6 py-4">
-                Leave Dates
-              </th>
+              <th className="px-6 py-4">Reason</th>
 
-              <th className="px-6 py-4">
-                Reason
-              </th>
+              <th className="px-6 py-4">Status</th>
 
-              <th className="px-6 py-4">
-                Status
-              </th>
+              <th className="px-6 py-4">Manager's Remarks</th>
 
-              <th className="px-6 py-4">
-                Manager's Remarks
-              </th>
+              {showDocument && <th className="px-6 py-4">Document</th>}
 
-              {showDocument && (
-                <th className="px-6 py-4">
-                  Document
-                </th>
-              )}
-
-              <th className="px-6 py-4">
-                Applied On
-              </th>
-
+              <th className="px-6 py-4">Applied On</th>
             </tr>
-
           </thead>
 
           <tbody className="divide-y divide-slate-100">
-
             {displayedLeaves.map((leave) => (
               <LeaveTableRow
                 key={leave.id}
                 leave={leave}
                 showDocument={showDocument}
-                onViewDocument={(document) =>
-                  setSelectedDocument(document)
-                }
+                onViewDocument={(document) => setSelectedDocument(document)}
               />
             ))}
-
           </tbody>
-
         </table>
-
       </div>
 
       <DocumentPreviewModal
         isOpen={!!selectedDocument}
-        document={selectedDocument}
+        fileUrl={selectedDocument?.url}
+        fileName={selectedDocument?.name}
         onClose={() => setSelectedDocument(null)}
       />
-
     </section>
   );
 };

@@ -33,43 +33,47 @@ const LeaveForm = ({
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    setError("");
+  setError("");
 
-    try {
-      await onSubmitLeave({
-        reason: formData.reason,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-      });
+  try {
+    const data = new FormData();
 
-      // Success notification
-      notifySuccess("Leave request submitted successfully!");
+    data.append("reason", formData.reason);
+    data.append("startDate", formData.startDate);
+    data.append("endDate", formData.endDate);
 
-      // Reset form
-      setFormData({
-        reason: "",
-        startDate: "",
-        endDate: "",
-      });
-
-      setFile(null);
-
-    } catch (error) {
-      console.error("Apply leave error:", error);
-
-      const message =
-        error.response?.data?.message ||
-        "Failed to apply for leave.";
-
-      // Toast notification
-      notifyError(message);
-
-      // Inline error
-      setError(message);
+    if (file) {
+      data.append("document", file);
     }
-  };
+
+    await onSubmitLeave(data);
+
+    notifySuccess(
+      "Leave request submitted successfully!"
+    );
+
+    setFormData({
+      reason: "",
+      startDate: "",
+      endDate: "",
+    });
+
+    setFile(null);
+
+  } catch (error) {
+    console.error("Apply leave error:", error);
+
+    const message =
+      error.response?.data?.message ||
+      "Failed to apply for leave.";
+
+    notifyError(message);
+
+    setError(message);
+  }
+};
 
   return (
     <form

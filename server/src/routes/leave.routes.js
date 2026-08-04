@@ -10,11 +10,18 @@ import {
 import protect from "../middleware/auth.middleware.js";
 import validate from "../middleware/validate.middleware.js";
 import { applyLeaveValidator } from "../validators/leave.validator.js";
-
+import upload from "../middleware/upload.middleware.js";
 const router = express.Router();
 
 // Apply for leave
-router.post("/", protect, applyLeaveValidator, validate, applyLeave);
+router.post(
+  "/",
+  protect,
+  upload.single("document"),
+  applyLeaveValidator,
+  validate,
+  applyLeave,
+);
 
 // Get logged-in employee leaves
 router.get("/", protect, getMyLeaves);
