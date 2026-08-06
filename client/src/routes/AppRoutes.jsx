@@ -1,27 +1,53 @@
 import { Routes, Route } from "react-router-dom";
+
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ManagerLogin from "../pages/auth/ManagerLogin";
+
 import Dashboard from "../pages/employee/Dashboard";
-import ManagerDashboard from "../pages/manager/ManagerDashboard";
-import ProtectedRoute from "./ProtectedRoute";
-import GuestRoute from "./GuestRoute";
 import LeaveHistory from "../pages/employee/LeaveHistory";
+
+import ManagerDashboard from "../pages/manager/ManagerDashboard";
+
+import EmployeeRoute from "./EmployeeRoute";
+import ManagerRoute from "./ManagerRoute";
+import GuestRoute from "./GuestRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* ========================= */}
+      {/* Guest Routes */}
+      {/* ========================= */}
+
       <Route element={<GuestRoute />}>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
+
+      {/* ========================= */}
+      {/* Manager Login */}
+      {/* ========================= */}
+
       <Route path="/manager-login" element={<ManagerLogin />} />
-      <Route element={<ProtectedRoute />}>
+
+      {/* ========================= */}
+      {/* Employee Routes */}
+      {/* ========================= */}
+
+      <Route element={<EmployeeRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
+
         <Route path="/leave-history" element={<LeaveHistory />} />
+      </Route>
+
+      {/* ========================= */}
+      {/* Manager Routes */}
+      {/* ========================= */}
+
+      <Route element={<ManagerRoute />}>
         <Route path="/manager/dashboard" element={<ManagerDashboard />} />
       </Route>
-      
     </Routes>
   );
 };

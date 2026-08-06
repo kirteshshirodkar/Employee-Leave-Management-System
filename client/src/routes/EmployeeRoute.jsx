@@ -2,21 +2,21 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { getToken } from "../services/tokenService";
 
-const ManagerRoute = () => {
+const EmployeeRoute = () => {
   const { user } = useAuth();
   const token = getToken();
 
   // Not authenticated
   if (!token || !user) {
-    return <Navigate to="/manager-login" replace />;
+    return <Navigate to="/" replace />;
   }
 
-  // Authenticated but not a manager
-  if (user.role !== "MANAGER") {
-    return <Navigate to="/dashboard" replace />;
+  // Manager trying to access employee portal
+  if (user.role === "MANAGER") {
+    return <Navigate to="/manager/dashboard" replace />;
   }
 
   return <Outlet />;
 };
 
-export default ManagerRoute;
+export default EmployeeRoute;

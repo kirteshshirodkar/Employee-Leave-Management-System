@@ -9,6 +9,7 @@ import Button from "../ui/Button";
 
 import { managerLogin } from "../../api/authApi";
 import { saveToken } from "../../services/tokenService";
+import { useAuth } from "../../hooks/useAuth";
 
 import {
   notifySuccess,
@@ -19,6 +20,7 @@ import {
 
 const ManagerLoginForm = () => {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -45,15 +47,21 @@ const ManagerLoginForm = () => {
     try {
       const response = await managerLogin(formData);
 
+      const { token, manager, message } = response.data;
+
+      // Save JWT token
+      saveToken(token);
+
+      // Store manager in AuthContext + localStorage
+      setUser(manager);
+
       dismissToast(toastId);
 
-      saveToken(response.data.token);
+      notifySuccess(
+        message || "Manager login successful."
+      );
 
-      notifySuccess(response.data.message);
-
-      setTimeout(() => {
-        navigate("/manager/dashboard");
-      }, 1000);
+      navigate("/manager/dashboard");
 
     } catch (error) {
       dismissToast(toastId);
@@ -61,9 +69,13 @@ const ManagerLoginForm = () => {
       const data = error.response?.data;
 
       if (data?.errors) {
-        data.errors.forEach((err) => notifyError(err.msg));
+        data.errors.forEach((err) =>
+          notifyError(err.msg)
+        );
       } else {
-        notifyError(data?.message || "Manager login failed.");
+        notifyError(
+          data?.message || "Manager login failed."
+        );
       }
     }
   };
