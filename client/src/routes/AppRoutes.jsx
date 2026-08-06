@@ -3,7 +3,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ManagerLogin from "../pages/auth/ManagerLogin";
 import Dashboard from "../pages/employee/Dashboard";
-import ManagerDashboard from "../pages/ManagerDashboard";
+import ManagerDashboard from "../pages/manager/ManagerDashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import GuestRoute from "./GuestRoute";
 import LeaveHistory from "../pages/employee/LeaveHistory";
