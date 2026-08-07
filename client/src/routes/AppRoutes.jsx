@@ -13,6 +13,7 @@ import EmployeeRoute from "./EmployeeRoute";
 import ManagerRoute from "./ManagerRoute";
 import GuestRoute from "./GuestRoute";
 import LeaveRequests from "../pages/manager/LeaveRequests";
+import Employees from "../pages/manager/Employees";
 
 const AppRoutes = () => {
   return (
@@ -49,6 +50,7 @@ const AppRoutes = () => {
       <Route element={<ManagerRoute />}>
         <Route path="/manager/dashboard" element={<ManagerDashboard />} />
         <Route path="/manager/leave-requests" element={<LeaveRequests/>} />
+        <Route path="/manager/employees" element={<Employees/>} />
       </Route>
     </Routes>
   );

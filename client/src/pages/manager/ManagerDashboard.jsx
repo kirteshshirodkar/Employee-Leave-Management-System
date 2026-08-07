@@ -1,6 +1,7 @@
 import ManagerLayout from "../../layouts/ManagerLayout";
 import ManagerStats from "../../components/manager/dashboard/ManagerStats";
-
+import LeaveRequestTable from "../../components/manager/leave-requests/LeaveRequestTable";
+import EmployeePreview from "../../components/manager/dashboard/EmployeePreview";
 
 const ManagerDashboard = () => {
   const requests = [
@@ -84,27 +85,51 @@ const ManagerDashboard = () => {
     },
   ];
 
-  const handleView = (request) => {
-    console.log("View:", request);
-  };
+  const employees = [
+    {
+      id: "1",
+      username: "john.doe",
+      joined: "12 Jan 2026",
+      leavesTaken: 4,
+    },
+    {
+      id: "2",
+      username: "priya.sharma",
+      joined: "18 Jan 2026",
+      leavesTaken: 7,
+    },
+    {
+      id: "3",
+      username: "rahul.kumar",
+      joined: "25 Jan 2026",
+      leavesTaken: 2,
+    },
+    {
+      id: "4",
+      username: "ananya.patel",
+      joined: "03 Feb 2026",
+      leavesTaken: 5,
+    },
+    {
+      id: "5",
+      username: "rohan.shah",
+      joined: "10 Feb 2026",
+      leavesTaken: 3,
+    },
+  ];
 
-  const handleApprove = (request) => {
-    console.log("Approve:", request);
-  };
-
-  const handleReject = (request) => {
-    console.log("Reject:", request);
-  };
-
-  // Only show the latest 5 on dashboard
+  // Show only the latest 5 requests
   const recentRequests = requests.slice(0, 5);
 
   return (
     <ManagerLayout>
       <div className="space-y-7">
+
         {/* Page Header */}
         <div>
-          <p className="text-sm font-medium text-blue-600">Manager Portal</p>
+          <p className="text-sm font-medium text-blue-600">
+            Manager Portal
+          </p>
 
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
             Dashboard
@@ -124,16 +149,28 @@ const ManagerDashboard = () => {
         />
 
         {/* Dashboard Content */}
-        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.75fr)]">
+        <div
+          className="
+            grid
+            grid-cols-1
+            gap-6
+            xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.75fr)]
+          "
+        >
+
           {/* Leave Requests */}
           <LeaveRequestTable
             requests={recentRequests}
-            onView={handleView}
-            onApprove={handleApprove}
-            onReject={handleReject}
             showViewAll
           />
+
+          {/* Employees */}
+          <EmployeePreview
+            employees={employees}
+          />
+
         </div>
+
       </div>
     </ManagerLayout>
   );

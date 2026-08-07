@@ -1,18 +1,7 @@
-import {
-  Eye,
-  FileText,
-  Check,
-  X,
-} from "lucide-react";
-
+import { Eye, FileText } from "lucide-react";
 import LeaveStatusBadge from "./LeaveStatusBadge";
 
-const LeaveRequestRow = ({
-  request,
-  onView,
-  onApprove,
-  onReject,
-}) => {
+const LeaveRequestRow = ({ request, onView }) => {
   const formatDate = (date) => {
     if (!date) return "—";
 
@@ -42,9 +31,12 @@ const LeaveRequestRow = ({
   };
 
   return (
-    <tr className="group border-b border-slate-100 transition-colors hover:bg-slate-50/60">
+    <tr className="transition-colors hover:bg-slate-50/60">
 
+      {/* ========================= */}
       {/* Employee */}
+      {/* ========================= */}
+
       <td className="px-5 py-4">
         <div className="flex items-center gap-3">
 
@@ -84,7 +76,10 @@ const LeaveRequestRow = ({
         </div>
       </td>
 
+      {/* ========================= */}
       {/* Leave Reason */}
+      {/* ========================= */}
+
       <td className="px-5 py-4">
         <p
           className="max-w-[220px] truncate text-sm text-slate-700"
@@ -94,7 +89,10 @@ const LeaveRequestRow = ({
         </p>
       </td>
 
+      {/* ========================= */}
       {/* Duration */}
+      {/* ========================= */}
+
       <td className="px-5 py-4">
         <p className="text-sm font-medium text-slate-700">
           {calculateDuration()}
@@ -107,19 +105,28 @@ const LeaveRequestRow = ({
         </p>
       </td>
 
+      {/* ========================= */}
       {/* Applied On */}
+      {/* ========================= */}
+
       <td className="px-5 py-4">
         <p className="text-sm text-slate-600">
           {formatDate(request.createdAt)}
         </p>
       </td>
 
+      {/* ========================= */}
       {/* Status */}
+      {/* ========================= */}
+
       <td className="px-5 py-4">
         <LeaveStatusBadge status={request.status} />
       </td>
 
+      {/* ========================= */}
       {/* Document */}
+      {/* ========================= */}
+
       <td className="px-5 py-4">
         {request.documentUrl ? (
           <button
@@ -127,7 +134,8 @@ const LeaveRequestRow = ({
             onClick={() =>
               window.open(
                 request.documentUrl,
-                "_blank"
+                "_blank",
+                "noopener,noreferrer"
               )
             }
             className="
@@ -151,15 +159,18 @@ const LeaveRequestRow = ({
         )}
       </td>
 
+      {/* ========================= */}
       {/* Actions */}
+      {/* ========================= */}
+
       <td className="px-5 py-4">
         <div className="flex items-center justify-end gap-2">
 
-          {/* View */}
+          {/* View Icon */}
           <button
             type="button"
             onClick={() => onView?.(request)}
-            title="View request"
+            title="View leave request"
             className="
               flex
               h-9
@@ -180,54 +191,27 @@ const LeaveRequestRow = ({
             <Eye size={17} />
           </button>
 
-          {/* Pending actions */}
-          {request.status === "PENDING" && (
-            <>
-              <button
-                type="button"
-                onClick={() =>
-                  onApprove?.(request)
-                }
-                title="Approve request"
-                className="
-                  flex
-                  h-9
-                  w-9
-                  items-center
-                  justify-center
-                  rounded-lg
-                  bg-emerald-50
-                  text-emerald-600
-                  transition-all
-                  hover:bg-emerald-100
-                "
-              >
-                <Check size={17} />
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  onReject?.(request)
-                }
-                title="Reject request"
-                className="
-                  flex
-                  h-9
-                  w-9
-                  items-center
-                  justify-center
-                  rounded-lg
-                  bg-red-50
-                  text-red-600
-                  transition-all
-                  hover:bg-red-100
-                "
-              >
-                <X size={17} />
-              </button>
-            </>
-          )}
+          {/* Review */}
+          <button
+            type="button"
+            onClick={() => onView?.(request)}
+            className="
+              rounded-lg
+              border
+              border-blue-200
+              bg-blue-50
+              px-3
+              py-2
+              text-xs
+              font-semibold
+              text-blue-600
+              transition-all
+              hover:bg-blue-100
+              hover:text-blue-700
+            "
+          >
+            Review
+          </button>
 
         </div>
       </td>
