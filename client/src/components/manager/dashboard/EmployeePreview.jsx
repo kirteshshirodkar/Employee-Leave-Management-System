@@ -4,19 +4,23 @@ import { useNavigate } from "react-router-dom";
 const EmployeePreview = ({ employees = [] }) => {
   const navigate = useNavigate();
 
+  const formatDate = (date) => {
+    if (!date) return "—";
+
+    return new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   return (
-    <div
-      className="
-        overflow-hidden
-        rounded-2xl
-        border
-        border-slate-200
-        bg-white
-        shadow-[0_4px_20px_rgba(15,23,42,0.04)]
-      "
-    >
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+      {/* ========================= */}
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-100 px-5 py-5">
+      {/* ========================= */}
+
+      <div className="flex items-start justify-between border-b border-slate-100 px-5 py-5">
         <div>
           <h2 className="text-lg font-semibold text-slate-900">
             Employees
@@ -35,9 +39,11 @@ const EmployeePreview = ({ employees = [] }) => {
         </div>
       </div>
 
+      {/* ========================= */}
       {/* Employees */}
-      <div className="divide-y divide-slate-100">
+      {/* ========================= */}
 
+      <div className="divide-y divide-slate-100">
         {employees.length > 0 ? (
           employees.map((employee) => (
             <div
@@ -53,6 +59,7 @@ const EmployeePreview = ({ employees = [] }) => {
               "
             >
               {/* Avatar */}
+
               <div
                 className="
                   flex
@@ -74,17 +81,19 @@ const EmployeePreview = ({ employees = [] }) => {
               </div>
 
               {/* Employee Information */}
+
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold text-slate-900">
                   {employee.username || "Unknown Employee"}
                 </p>
 
                 <p className="mt-0.5 text-xs text-slate-400">
-                  Joined {employee.joined}
+                  Joined {formatDate(employee.createdAt)}
                 </p>
               </div>
 
-              {/* Leaves */}
+              {/* Leaves Taken */}
+
               <div className="text-right">
                 <p className="text-sm font-semibold text-slate-700">
                   {employee.leavesTaken ?? 0}
@@ -108,12 +117,18 @@ const EmployeePreview = ({ employees = [] }) => {
             <p className="mt-3 text-sm font-medium text-slate-900">
               No employees found
             </p>
+
+            <p className="mt-1 text-xs text-slate-400">
+              No registered employees are available.
+            </p>
           </div>
         )}
-
       </div>
 
+      {/* ========================= */}
       {/* View All */}
+      {/* ========================= */}
+
       <div className="border-t border-slate-100 p-4">
         <button
           type="button"
@@ -136,6 +151,7 @@ const EmployeePreview = ({ employees = [] }) => {
           "
         >
           View all employees
+
           <ArrowRight size={16} />
         </button>
       </div>

@@ -1,131 +1,124 @@
+import { useCallback, useEffect } from "react";
+
 import ManagerLayout from "../../layouts/ManagerLayout";
 import ManagerStats from "../../components/manager/dashboard/ManagerStats";
 import LeaveRequestTable from "../../components/manager/leave-requests/LeaveRequestTable";
 import EmployeePreview from "../../components/manager/dashboard/EmployeePreview";
 
+import useManager from "../../hooks/useManager";
+
 const ManagerDashboard = () => {
-  const requests = [
-    {
-      id: "1",
-      employee: {
-        username: "john.doe",
-        email: "john@example.com",
-      },
-      reason: "Medical appointment",
-      startDate: "2026-08-08",
-      endDate: "2026-08-09",
-      status: "PENDING",
-      documentUrl: null,
-      createdAt: "2026-08-05",
-    },
-    {
-      id: "2",
-      employee: {
-        username: "priya.sharma",
-        email: "priya@example.com",
-      },
-      reason: "Family function",
-      startDate: "2026-08-12",
-      endDate: "2026-08-14",
-      status: "PENDING",
-      documentUrl: "#",
-      createdAt: "2026-08-04",
-    },
-    {
-      id: "3",
-      employee: {
-        username: "rahul.kumar",
-        email: "rahul@example.com",
-      },
-      reason: "Personal work",
-      startDate: "2026-08-02",
-      endDate: "2026-08-02",
-      status: "APPROVED",
-      documentUrl: null,
-      createdAt: "2026-08-01",
-    },
-    {
-      id: "4",
-      employee: {
-        username: "ananya.patel",
-        email: "ananya@example.com",
-      },
-      reason: "Travel",
-      startDate: "2026-07-28",
-      endDate: "2026-07-30",
-      status: "REJECTED",
-      documentUrl: null,
-      createdAt: "2026-07-27",
-    },
-    {
-      id: "5",
-      employee: {
-        username: "rohan.shah",
-        email: "rohan@example.com",
-      },
-      reason: "Doctor appointment",
-      startDate: "2026-07-25",
-      endDate: "2026-07-25",
-      status: "APPROVED",
-      documentUrl: null,
-      createdAt: "2026-07-24",
-    },
-    {
-      id: "6",
-      employee: {
-        username: "neha.patel",
-        email: "neha@example.com",
-      },
-      reason: "Personal work",
-      startDate: "2026-07-20",
-      endDate: "2026-07-21",
-      status: "PENDING",
-      documentUrl: null,
-      createdAt: "2026-07-19",
-    },
-  ];
+  const {
+    stats,
+    requests,
+    employees,
 
-  const employees = [
-    {
-      id: "1",
-      username: "john.doe",
-      joined: "12 Jan 2026",
-      leavesTaken: 4,
-    },
-    {
-      id: "2",
-      username: "priya.sharma",
-      joined: "18 Jan 2026",
-      leavesTaken: 7,
-    },
-    {
-      id: "3",
-      username: "rahul.kumar",
-      joined: "25 Jan 2026",
-      leavesTaken: 2,
-    },
-    {
-      id: "4",
-      username: "ananya.patel",
-      joined: "03 Feb 2026",
-      leavesTaken: 5,
-    },
-    {
-      id: "5",
-      username: "rohan.shah",
-      joined: "10 Feb 2026",
-      leavesTaken: 3,
-    },
-  ];
+    loading,
+    statsLoading,
+    employeesLoading,
+    error,
 
-  // Show only the latest 5 requests
-  const recentRequests = requests.slice(0, 5);
+    fetchDashboardStats,
+    fetchLeaveRequests,
+    fetchEmployees,
+
+    approveLeave,
+    rejectLeave,
+  } = useManager();
+
+  // ==========================================
+  // Fetch dashboard data
+  // ==========================================
+
+  const fetchDashboardData = useCallback(async () => {
+    await Promise.all([
+      fetchDashboardStats(),
+
+      fetchLeaveRequests({
+        page: 1,
+        limit: 5,
+      }),
+
+      fetchEmployees(),
+    ]);
+  }, [
+    fetchDashboardStats,
+    fetchLeaveRequests,
+    fetchEmployees,
+  ]);
+
+  // ==========================================
+  // Initial loading
+  // ==========================================
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
+
+  // ==========================================
+  // Approve leave
+  // ==========================================
+
+  const handleApprove = async ({ request }) => {
+    try {
+      await approveLeave(request.id);
+
+      await Promise.all([
+        fetchDashboardStats(),
+
+        fetchLeaveRequests({
+          page: 1,
+          limit: 5,
+        }),
+      ]);
+
+      // Toast handled by LeaveRequestModal
+    } catch (error) {
+      console.error(
+        "Failed to approve leave:",
+        error
+      );
+
+      throw error;
+    }
+  };
+
+  // ==========================================
+  // Reject leave
+  // ==========================================
+
+  const handleReject = async ({ request }) => {
+    try {
+      await rejectLeave(request.id);
+
+      await Promise.all([
+        fetchDashboardStats(),
+
+        fetchLeaveRequests({
+          page: 1,
+          limit: 5,
+        }),
+      ]);
+
+      // Toast handled by LeaveRequestModal
+    } catch (error) {
+      console.error(
+        "Failed to reject leave:",
+        error
+      );
+
+      throw error;
+    }
+  };
 
   return (
     <ManagerLayout>
-      <div className="space-y-7">
+      <div className="space-y-8">
 
-        {/* Page Header */}
+        {/* ==========================================
+            Page Header
+        ========================================== */}
+
         <div>
           <p className="text-sm font-medium text-blue-600">
             Manager Portal
@@ -135,41 +128,92 @@ const ManagerDashboard = () => {
             Dashboard
           </h1>
 
-          <p className="mt-1 text-sm text-slate-500">
-            Manage employees and review leave requests from one place.
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">
+            Manage employees and review leave requests
+            from one place.
           </p>
         </div>
 
-        {/* Stats */}
-        <ManagerStats
-          totalEmployees={42}
-          pendingRequests={8}
-          approvedRequests={21}
-          rejectedRequests={5}
-        />
+        {/* ==========================================
+            Global Error
+        ========================================== */}
 
-        {/* Dashboard Content */}
-        <div
-          className="
-            grid
-            grid-cols-1
-            gap-6
-            xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.75fr)]
-          "
-        >
+        {error && (
+          <div className="-mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+            <p className="text-sm text-red-600">
+              {error}
+            </p>
+          </div>
+        )}
 
-          {/* Leave Requests */}
-          <LeaveRequestTable
-            requests={recentRequests}
-            showViewAll
+        {/* ==========================================
+            Statistics
+        ========================================== */}
+
+        <section>
+          <ManagerStats
+            totalEmployees={stats.totalEmployees}
+            pendingRequests={stats.pendingLeaves}
+            approvedRequests={stats.approvedLeaves}
+            rejectedRequests={stats.rejectedLeaves}
+            loading={statsLoading}
           />
+        </section>
 
-          {/* Employees */}
-          <EmployeePreview
-            employees={employees}
-          />
+        {/* ==========================================
+            Main Dashboard Content
+        ========================================== */}
 
-        </div>
+        <section className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.75fr)]">
+
+          {/* ========================================
+              Leave Requests
+          ======================================== */}
+
+          <div className="min-w-0">
+            {loading ? (
+              <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-slate-200 bg-white">
+                <div className="text-center">
+                  <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600" />
+
+                  <p className="mt-3 text-sm text-slate-500">
+                    Loading leave requests...
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <LeaveRequestTable
+                requests={requests}
+                showViewAll
+                onApprove={handleApprove}
+                onReject={handleReject}
+              />
+            )}
+          </div>
+
+          {/* ========================================
+              Employees
+          ======================================== */}
+
+          <div className="min-w-0">
+            {employeesLoading ? (
+              <div className="flex min-h-[300px] items-center justify-center rounded-2xl border border-slate-200 bg-white">
+                <div className="text-center">
+                  <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600" />
+
+                  <p className="mt-3 text-sm text-slate-500">
+                    Loading employees...
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <EmployeePreview
+                employees={employees.slice(0, 5)}
+              />
+            )}
+          </div>
+
+        </section>
 
       </div>
     </ManagerLayout>

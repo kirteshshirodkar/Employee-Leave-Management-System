@@ -100,8 +100,8 @@ const EmployeeRow = ({ employee }) => {
 
           <span className="text-sm text-slate-500">
             {employee.leavesTaken === 1
-              ? "day"
-              : "days"}
+              ? "leave"
+              : "leaves"}
           </span>
 
         </div>

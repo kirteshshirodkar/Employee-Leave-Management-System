@@ -38,21 +38,15 @@ const LeaveRequestDetails = ({
     const start = new Date(request.startDate);
     const end = new Date(request.endDate);
 
-    const difference =
-      Math.ceil(
-        (end - start) / (1000 * 60 * 60 * 24)
-      ) + 1;
+    const difference = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
-    return `${difference} ${
-      difference === 1 ? "day" : "days"
-    }`;
+    return `${difference} ${difference === 1 ? "day" : "days"}`;
   };
 
   const isPending = request.status === "PENDING";
 
   return (
     <div className="flex max-h-[90vh] flex-col">
-
       {/* ========================= */}
       {/* Modal Header */}
       {/* ========================= */}
@@ -102,17 +96,13 @@ const LeaveRequestDetails = ({
       {/* ========================= */}
 
       <div className="overflow-y-auto px-6 py-6">
-
         <div className="space-y-6">
-
           {/* ========================= */}
           {/* Employee */}
           {/* ========================= */}
 
           <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
-
             <div className="flex items-center gap-4">
-
               <div
                 className="
                   flex
@@ -130,9 +120,7 @@ const LeaveRequestDetails = ({
               </div>
 
               <div>
-                <p className="text-xs font-medium text-slate-500">
-                  Employee
-                </p>
+                <p className="text-xs font-medium text-slate-500">Employee</p>
 
                 <p className="mt-1 text-base font-semibold text-slate-900">
                   {request.employee?.username ||
@@ -140,9 +128,7 @@ const LeaveRequestDetails = ({
                     "Unknown employee"}
                 </p>
               </div>
-
             </div>
-
           </div>
 
           {/* ========================= */}
@@ -151,10 +137,7 @@ const LeaveRequestDetails = ({
 
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <FileText
-                size={16}
-                className="text-slate-400"
-              />
+              <FileText size={16} className="text-slate-400" />
 
               <p className="text-sm font-semibold text-slate-700">
                 Leave Reason
@@ -173,18 +156,12 @@ const LeaveRequestDetails = ({
           {/* ========================= */}
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-
             {/* Leave From */}
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <div className="flex items-center gap-2">
-                <CalendarDays
-                  size={16}
-                  className="text-blue-500"
-                />
+                <CalendarDays size={16} className="text-blue-500" />
 
-                <p className="text-xs font-medium text-slate-500">
-                  Leave From
-                </p>
+                <p className="text-xs font-medium text-slate-500">Leave From</p>
               </div>
 
               <p className="mt-2 text-sm font-semibold text-slate-900">
@@ -195,14 +172,9 @@ const LeaveRequestDetails = ({
             {/* Leave To */}
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <div className="flex items-center gap-2">
-                <CalendarDays
-                  size={16}
-                  className="text-blue-500"
-                />
+                <CalendarDays size={16} className="text-blue-500" />
 
-                <p className="text-xs font-medium text-slate-500">
-                  Leave To
-                </p>
+                <p className="text-xs font-medium text-slate-500">Leave To</p>
               </div>
 
               <p className="mt-2 text-sm font-semibold text-slate-900">
@@ -213,21 +185,15 @@ const LeaveRequestDetails = ({
             {/* Duration */}
             <div className="rounded-xl border border-slate-200 bg-white p-4">
               <div className="flex items-center gap-2">
-                <Clock3
-                  size={16}
-                  className="text-blue-500"
-                />
+                <Clock3 size={16} className="text-blue-500" />
 
-                <p className="text-xs font-medium text-slate-500">
-                  Duration
-                </p>
+                <p className="text-xs font-medium text-slate-500">Duration</p>
               </div>
 
               <p className="mt-2 text-sm font-semibold text-slate-900">
                 {calculateDuration()}
               </p>
             </div>
-
           </div>
 
           {/* ========================= */}
@@ -236,10 +202,7 @@ const LeaveRequestDetails = ({
 
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <FileText
-                size={16}
-                className="text-slate-400"
-              />
+              <FileText size={16} className="text-slate-400" />
 
               <p className="text-sm font-semibold text-slate-700">
                 Supporting Document
@@ -248,9 +211,7 @@ const LeaveRequestDetails = ({
 
             {request.documentUrl ? (
               <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4">
-
                 <div className="flex min-w-0 items-center gap-3">
-
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
                     <FileText size={18} />
                   </div>
@@ -260,11 +221,8 @@ const LeaveRequestDetails = ({
                       Supporting document
                     </p>
 
-                    <p className="text-xs text-slate-500">
-                      Uploaded document
-                    </p>
+                    <p className="text-xs text-slate-500">Uploaded document</p>
                   </div>
-
                 </div>
 
                 <a
@@ -293,7 +251,6 @@ const LeaveRequestDetails = ({
                   View
                   <ExternalLink size={14} />
                 </a>
-
               </div>
             ) : (
               <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50/50 px-4 py-4">
@@ -303,6 +260,28 @@ const LeaveRequestDetails = ({
               </div>
             )}
           </div>
+
+          {/* ========================= */}
+          {/* Existing Manager Remarks */}
+          {/* ========================= */}
+
+          {!isPending && request.remarks && (
+            <div>
+              <div className="mb-2 flex items-center gap-2">
+                <FileText size={16} className="text-slate-400" />
+
+                <p className="text-sm font-semibold text-slate-700">
+                  Manager Remarks
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-3">
+                <p className="text-sm leading-6 text-slate-700">
+                  {request.remarks}
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* ========================= */}
           {/* Manager Remarks */}
@@ -323,9 +302,7 @@ const LeaveRequestDetails = ({
               <textarea
                 id="managerRemarks"
                 value={remarks}
-                onChange={(e) =>
-                  setRemarks(e.target.value)
-                }
+                onChange={(e) => setRemarks(e.target.value)}
                 placeholder="Enter a reason or remarks for your decision..."
                 rows={4}
                 disabled={loading}
@@ -356,9 +333,7 @@ const LeaveRequestDetails = ({
               </p>
             </div>
           )}
-
         </div>
-
       </div>
 
       {/* ========================= */}
@@ -367,7 +342,6 @@ const LeaveRequestDetails = ({
 
       {isPending ? (
         <div className="flex flex-col-reverse gap-3 border-t border-slate-100 bg-slate-50/50 px-6 py-4 sm:flex-row sm:justify-end">
-
           <button
             type="button"
             onClick={onReject}
@@ -424,11 +398,9 @@ const LeaveRequestDetails = ({
             <Check size={17} />
             Approve Leave
           </button>
-
         </div>
       ) : (
         <div className="flex justify-end border-t border-slate-100 bg-slate-50/50 px-6 py-4">
-
           <button
             type="button"
             onClick={onClose}
@@ -448,10 +420,8 @@ const LeaveRequestDetails = ({
           >
             Close
           </button>
-
         </div>
       )}
-
     </div>
   );
 };

@@ -174,17 +174,18 @@ export const getAllEmployees = async () => {
   const employees = await prisma.employee.findMany({
     where: {
       role: "EMPLOYEE",
-      isActive: true,
     },
-
     select: {
       id: true,
       username: true,
       createdAt: true,
 
-      _count: {
+      leaves: {
+        where: {
+          status: "APPROVED",
+        },
         select: {
-          leaves: true,
+          id: true,
         },
       },
     },
@@ -197,8 +198,8 @@ export const getAllEmployees = async () => {
   return employees.map((employee) => ({
     id: employee.id,
     username: employee.username,
-    dateOfJoining: employee.createdAt,
-    totalLeaves: employee._count.leaves,
+    createdAt: employee.createdAt,
+    leavesTaken: employee.leaves.length,
   }));
 };
 

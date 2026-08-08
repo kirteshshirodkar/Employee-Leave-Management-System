@@ -10,6 +10,7 @@ const LeaveRequestTable = ({
   showViewAll = false,
   onApprove,
   onReject,
+  actionLoading: externalActionLoading = false,
 }) => {
   const navigate = useNavigate();
 
@@ -46,63 +47,62 @@ const LeaveRequestTable = ({
   // =========================
 
   const handleApprove = async ({
-    request,
-    remarks,
-  }) => {
-    try {
-      setActionLoading(true);
+  request,
+}) => {
+  try {
 
-      console.log("APPROVING REQUEST:", request);
-      console.log("MANAGER REMARKS:", remarks);
+    setActionLoading(true);
 
-      // API will be connected here later
+    await onApprove?.({
+      request,
+    });
 
-      onApprove?.({
-        request,
-        remarks,
-      });
+  } catch (error) {
 
-    } catch (error) {
-      console.error(
-        "Failed to approve request:",
-        error
-      );
-    } finally {
-      setActionLoading(false);
-    }
-  };
+    console.error(
+      "Failed to approve request:",
+      error
+    );
+
+    throw error;
+
+  } finally {
+
+    setActionLoading(false);
+
+  }
+};
 
   // =========================
   // Reject
   // =========================
 
-  const handleReject = async ({
-    request,
-    remarks,
-  }) => {
-    try {
-      setActionLoading(true);
+ const handleReject = async ({
+  request,
+}) => {
+  try {
 
-      console.log("REJECTING REQUEST:", request);
-      console.log("MANAGER REMARKS:", remarks);
+    setActionLoading(true);
 
-      // API will be connected here later
+    await onReject?.({
+      request,
+    });
 
-      onReject?.({
-        request,
-        remarks,
-      });
+  } catch (error) {
 
-    } catch (error) {
-      console.error(
-        "Failed to reject request:",
-        error
-      );
-    } finally {
-      setActionLoading(false);
-    }
-  };
+    console.error(
+      "Failed to reject request:",
+      error
+    );
 
+    throw error;
+
+  } finally {
+
+    setActionLoading(false);
+
+  }
+};
   return (
     <>
       <div

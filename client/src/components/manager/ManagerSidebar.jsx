@@ -8,12 +8,14 @@ import {
   X,
   UserCircle,
 } from "lucide-react";
+
 import { NavLink } from "react-router-dom";
 
 const ManagerSidebar = ({
   isOpen,
   onClose,
   onLogout,
+  manager,
 }) => {
   const navigation = [
     {
@@ -46,12 +48,26 @@ const ManagerSidebar = ({
     },
   ];
 
+  // Get username safely
+  const username =
+    manager?.username ||
+    manager?.name ||
+    "Manager";
+
+  // Generate initials from username
+  const initials = username
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <>
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-slate-950/50 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
           onClick={onClose}
         />
       )}
@@ -101,7 +117,6 @@ const ManagerSidebar = ({
             </div>
           </div>
 
-          {/* Mobile Close */}
           <button
             onClick={onClose}
             className="rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white lg:hidden"
@@ -112,7 +127,6 @@ const ManagerSidebar = ({
 
         {/* Navigation */}
         <div className="flex-1 overflow-y-auto px-4 py-6">
-          {/* Main Navigation */}
           <nav className="space-y-2">
             {navigation.map((item) => {
               const Icon = item.icon;
@@ -147,7 +161,9 @@ const ManagerSidebar = ({
                     <>
                       <Icon
                         size={19}
-                        strokeWidth={isActive ? 2.2 : 1.8}
+                        strokeWidth={
+                          isActive ? 2.2 : 1.8
+                        }
                       />
 
                       <span>{item.name}</span>
@@ -158,7 +174,7 @@ const ManagerSidebar = ({
             })}
           </nav>
 
-          {/* Secondary Section */}
+          {/* Secondary Navigation */}
           <div className="mt-9">
             <p className="mb-3 px-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
               Other
@@ -193,7 +209,11 @@ const ManagerSidebar = ({
                       `
                     }
                   >
-                    <Icon size={19} strokeWidth={1.8} />
+                    <Icon
+                      size={19}
+                      strokeWidth={1.8}
+                    />
+
                     <span>{item.name}</span>
                   </NavLink>
                 );
@@ -205,20 +225,24 @@ const ManagerSidebar = ({
         {/* Manager Profile */}
         <div className="border-t border-white/10 p-3">
           <div className="rounded-2xl border border-white/10 bg-white/[0.04]">
+
             {/* Profile */}
             <div className="flex items-center gap-3 px-3 py-4">
+
+              {/* Avatar */}
               <div className="relative shrink-0">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-semibold">
-                  JM
+                  {initials}
                 </div>
 
                 {/* Online Indicator */}
                 <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#061A3A] bg-emerald-400" />
               </div>
 
+              {/* Manager Information */}
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold text-white">
-                  John Manager
+                  {username}
                 </p>
 
                 <p className="mt-0.5 text-xs text-slate-400">
@@ -259,10 +283,15 @@ const ManagerSidebar = ({
                   hover:text-red-400
                 "
               >
-                <LogOut size={18} strokeWidth={1.8} />
+                <LogOut
+                  size={18}
+                  strokeWidth={1.8}
+                />
+
                 <span>Logout</span>
               </button>
             </div>
+
           </div>
         </div>
       </aside>

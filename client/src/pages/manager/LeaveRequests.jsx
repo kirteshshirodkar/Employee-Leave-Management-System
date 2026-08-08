@@ -1,120 +1,125 @@
+import { useEffect } from "react";
+
 import ManagerLayout from "../../layouts/ManagerLayout";
 import LeaveRequestTable from "../../components/manager/leave-requests/LeaveRequestTable";
 
+import useManager from "../../hooks/useManager";
+
 const LeaveRequests = () => {
-  // Later this will come from API
-  const requests = [
-    {
-      id: "1",
-      employee: {
-        username: "john.doe",
-        email: "john@example.com",
-      },
-      reason: "Medical appointment",
-      startDate: "2026-08-08",
-      endDate: "2026-08-09",
-      status: "PENDING",
-      documentUrl: null,
-      createdAt: "2026-08-05",
-    },
-    {
-      id: "2",
-      employee: {
-        username: "priya.sharma",
-        email: "priya@example.com",
-      },
-      reason: "Family function",
-      startDate: "2026-08-12",
-      endDate: "2026-08-14",
-      status: "PENDING",
-      documentUrl: "#",
-      createdAt: "2026-08-04",
-    },
-    {
-      id: "3",
-      employee: {
-        username: "rahul.kumar",
-        email: "rahul@example.com",
-      },
-      reason: "Personal work",
-      startDate: "2026-08-02",
-      endDate: "2026-08-02",
-      status: "APPROVED",
-      documentUrl: null,
-      createdAt: "2026-08-01",
-    },
-    {
-      id: "4",
-      employee: {
-        username: "ananya.patel",
-        email: "ananya@example.com",
-      },
-      reason: "Travel",
-      startDate: "2026-07-28",
-      endDate: "2026-07-30",
-      status: "REJECTED",
-      documentUrl: null,
-      createdAt: "2026-07-27",
-    },
-    {
-      id: "5",
-      employee: {
-        username: "rohan.shah",
-        email: "rohan@example.com",
-      },
-      reason: "Doctor appointment",
-      startDate: "2026-07-25",
-      endDate: "2026-07-25",
-      status: "APPROVED",
-      documentUrl: null,
-      createdAt: "2026-07-24",
-    },
-    {
-      id: "6",
-      employee: {
-        username: "neha.patel",
-        email: "neha@example.com",
-      },
-      reason: "Personal work",
-      startDate: "2026-07-20",
-      endDate: "2026-07-21",
-      status: "PENDING",
-      documentUrl: null,
-      createdAt: "2026-07-19",
-    },
-  ];
+  const {
+    requests,
+    loading,
+    error,
+    fetchLeaveRequests,
+    approveLeave,
+    rejectLeave,
+    actionLoading,
+  } = useManager();
+
+  // ==========================================
+  // Fetch all leave requests
+  // ==========================================
+
+  useEffect(() => {
+    fetchLeaveRequests({
+      page: 1,
+      limit: 100,
+    });
+  }, [fetchLeaveRequests]);
+
+  // ==========================================
+  // View request
+  // ==========================================
+
   const handleView = (request) => {
     console.log("View:", request);
   };
 
-  const handleApprove = (request) => {
-    console.log("Approve:", request);
+  // ==========================================
+  // Approve request
+  // ==========================================
+
+  const handleApprove = async ({ request }) => {
+    try {
+      await approveLeave(request.id);
+    } catch (error) {
+      console.error(
+        "Failed to approve leave:",
+        error
+      );
+    }
   };
 
-  const handleReject = (request) => {
-    console.log("Reject:", request);
+  // ==========================================
+  // Reject request
+  // ==========================================
+
+  const handleReject = async ({ request }) => {
+    try {
+      await rejectLeave(request.id);
+    } catch (error) {
+      console.error(
+        "Failed to reject leave:",
+        error
+      );
+    }
   };
+
   return (
     <ManagerLayout>
-      <div className="space-y-7">
+      <div className="space-y-6">
+
+        {/* ========================= */}
+        {/* Page Header */}
+        {/* ========================= */}
+
         <div>
-          <p className="text-sm font-medium text-blue-600">Manager Portal</p>
+          <p className="text-sm font-medium text-blue-600">
+            Manager Portal
+          </p>
 
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
             Leave Requests
           </h1>
 
           <p className="mt-1 text-sm text-slate-500">
-            Review, approve, and manage employee leave requests.
+            Review, approve, and manage employee leave
+            requests.
           </p>
         </div>
 
-        <LeaveRequestTable
-          requests={requests}
-          onView={handleView}
-          onApprove={handleApprove}
-          onReject={handleReject}
-        />
+        {/* ========================= */}
+        {/* Error */}
+        {/* ========================= */}
+
+        {error && (
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+            <p className="text-sm text-red-600">
+              {error}
+            </p>
+          </div>
+        )}
+
+        {/* ========================= */}
+        {/* Leave Requests */}
+        {/* ========================= */}
+
+        {loading ? (
+          <div className="rounded-xl border border-slate-200 bg-white p-12 text-center">
+            <p className="text-sm text-slate-500">
+              Loading leave requests...
+            </p>
+          </div>
+        ) : (
+          <LeaveRequestTable
+            requests={requests}
+            onView={handleView}
+            onApprove={handleApprove}
+            onReject={handleReject}
+            actionLoading={actionLoading}
+          />
+        )}
+
       </div>
     </ManagerLayout>
   );

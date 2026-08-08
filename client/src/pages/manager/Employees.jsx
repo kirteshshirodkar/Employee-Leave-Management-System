@@ -1,69 +1,86 @@
+import { useEffect } from "react";
+
 import ManagerLayout from "../../layouts/ManagerLayout";
 import EmployeeTable from "../../components/manager/employees/EmployeeTable";
 
+import useManager from "../../hooks/useManager";
+
 const Employees = () => {
-  const employees = [
-    {
-      id: "1",
-      username: "john.doe",
-      createdAt: "2026-01-12",
-      leavesTaken: 4,
-    },
-    {
-      id: "2",
-      username: "priya.sharma",
-      createdAt: "2026-01-18",
-      leavesTaken: 7,
-    },
-    {
-      id: "3",
-      username: "rahul.kumar",
-      createdAt: "2026-01-25",
-      leavesTaken: 2,
-    },
-    {
-      id: "4",
-      username: "ananya.patel",
-      createdAt: "2026-02-03",
-      leavesTaken: 5,
-    },
-    {
-      id: "5",
-      username: "rohan.shah",
-      createdAt: "2026-02-10",
-      leavesTaken: 3,
-    },
-    {
-      id: "6",
-      username: "neha.patel",
-      createdAt: "2026-02-17",
-      leavesTaken: 6,
-    },
-  ];
+  const {
+    employees,
+    employeesLoading,
+    error,
+    fetchEmployees,
+  } = useManager();
+
+  // ==========================================
+  // Fetch employees
+  // ==========================================
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees]);
 
   return (
     <ManagerLayout>
-      <div className="space-y-7">
+      {/* ========================= */}
+      {/* Page Header */}
+      {/* ========================= */}
 
-        {/* Page Header */}
-        <div>
-          <p className="text-sm font-medium text-blue-600">
-            Manager Portal
-          </p>
+      <div>
+        <p className="text-sm font-medium text-blue-600">
+          Manager Portal
+        </p>
 
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
-            Employees
-          </h1>
+        <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
+          Employees
+        </h1>
 
-          <p className="mt-1 text-sm text-slate-500">
-            View all registered employees and their leave usage.
+        <p className="mt-1 text-sm text-slate-500">
+          View all registered employees and their leave usage.
+        </p>
+      </div>
+
+      {/* ========================= */}
+      {/* Error */}
+      {/* ========================= */}
+
+      {error && (
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+          <p className="text-sm text-red-600">
+            {error}
           </p>
         </div>
+      )}
 
-        {/* Employee Table */}
-        <EmployeeTable employees={employees} />
+      {/* ========================= */}
+      {/* Employee Table */}
+      {/* ========================= */}
 
-      </div>
+      {employeesLoading ? (
+        <div className="rounded-xl border border-slate-200 bg-white p-10 text-center">
+          <div
+            className="
+              mx-auto
+              h-7
+              w-7
+              animate-spin
+              rounded-full
+              border-2
+              border-slate-200
+              border-t-blue-600
+            "
+          />
+
+          <p className="mt-3 text-sm text-slate-500">
+            Loading employees...
+          </p>
+        </div>
+      ) : (
+        <EmployeeTable
+          employees={employees}
+        />
+      )}
     </ManagerLayout>
   );
 };

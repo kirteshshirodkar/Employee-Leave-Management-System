@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 const ManagerLayout = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const { logout } = useAuth();
+    const { logout,user } = useAuth();
 
     return (
         <div className="min-h-screen bg-[#F8FAFC]">
@@ -15,6 +15,7 @@ const ManagerLayout = ({ children }) => {
                 isOpen={sidebarOpen}
                 onClose={() => setSidebarOpen(false)}
                 onLogout={logout}
+                manager={user}
             />
 
             <div className="min-h-screen lg:pl-[260px]">
