@@ -40,29 +40,35 @@ model Employee {
 
 model Leave {
 
-  id          String      @id @default(cuid())
+  id           String      @id @default(cuid())
 
-  employeeId  String
+  employeeId   String
 
-  employee    Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  employee     Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
-  reason      String
+  reason       String
 
-  startDate   DateTime
+  startDate    DateTime
 
-  endDate     DateTime
+  endDate      DateTime
 
-  totalDays   Int
+  totalDays    Int
 
-  status      LeaveStatus @default(PENDING)
+  status       LeaveStatus @default(PENDING)
 
-  remarks     String?
+  remarks      String?
 
-  documentUrl String?
+  documentUrl  String?
 
   documentName String?
 
-  createdAt   DateTime @default(now())
+  createdAt    DateTime @default(now())
 
-  updatedAt   DateTime @updatedAt
+  updatedAt    DateTime @updatedAt
+
+  @@index([status])
+
+  @@index([employeeId])
+
+  @@index([createdAt])
 }

@@ -80,3 +80,4 @@ export const getLeaveStats = async (req, res, next) => {
     next(error);
   }
 };
+
