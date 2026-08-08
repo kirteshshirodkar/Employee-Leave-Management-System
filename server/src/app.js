@@ -17,15 +17,17 @@ app.use(
 
 app.use(express.json());
 
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "Server is running",
+  });
+});
+
 app.use("/api/auth", authRoutes);
-
 app.use("/api/leaves", leaveRoutes);
-
 app.use("/api/manager", managerRoutes);
 
-/*
- * Error middleware MUST be last
- */
 app.use(errorHandler);
 
 export default app;
