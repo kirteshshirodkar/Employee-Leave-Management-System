@@ -23,64 +23,65 @@ const Employees = () => {
 
   return (
     <ManagerLayout>
-      {/* ========================= */}
-      {/* Page Header */}
-      {/* ========================= */}
+      <div className="mx-auto w-full max-w-7xl">
+        {/* ========================= */}
+        {/* Page Header */}
+        {/* ========================= */}
 
-      <div>
-        <p className="text-sm font-medium text-blue-600">
-          Manager Portal
-        </p>
+        <div className="mb-6 sm:mb-8">
+          <p className="text-xs font-semibold uppercase tracking-wider text-blue-600 sm:text-sm">
+            Manager Portal
+          </p>
 
-        <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
-          Employees
-        </h1>
+          <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+            Employees
+          </h1>
 
-        <p className="mt-1 text-sm text-slate-500">
-          View all registered employees and their leave usage.
-        </p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            View all registered employees and their leave usage.
+          </p>
+        </div>
+
+        {/* ========================= */}
+        {/* Error */}
+        {/* ========================= */}
+
+        {error && (
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 sm:mb-8">
+            <p className="text-sm leading-5 text-red-600">
+              {error}
+            </p>
+          </div>
+        )}
+
+        {/* ========================= */}
+        {/* Employee Table */}
+        {/* ========================= */}
+
+        <section className="w-full">
+          {employeesLoading ? (
+            <div className="flex min-h-[240px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-8 shadow-sm sm:min-h-[280px] sm:rounded-3xl">
+              <div
+                className="
+                  h-8
+                  w-8
+                  animate-spin
+                  rounded-full
+                  border-2
+                  border-slate-200
+                  border-t-blue-600
+                "
+              />
+
+              <p className="mt-4 text-sm text-slate-500">
+                Loading employees...
+              </p>
+            </div>
+          ) : (
+            <EmployeeTable employees={employees} />
+          )}
+        </section>
       </div>
-
-      {/* ========================= */}
-      {/* Error */}
-      {/* ========================= */}
-
-      {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3">
-          <p className="text-sm text-red-600">
-            {error}
-          </p>
-        </div>
-      )}
-
-      {/* ========================= */}
-      {/* Employee Table */}
-      {/* ========================= */}
-
-      {employeesLoading ? (
-        <div className="rounded-xl border border-slate-200 bg-white p-10 text-center">
-          <div
-            className="
-              mx-auto
-              h-7
-              w-7
-              animate-spin
-              rounded-full
-              border-2
-              border-slate-200
-              border-t-blue-600
-            "
-          />
-
-          <p className="mt-3 text-sm text-slate-500">
-            Loading employees...
-          </p>
-        </div>
-      ) : (
-        <EmployeeTable
-          employees={employees}
-        />
-      )}
     </ManagerLayout>
   );
 };

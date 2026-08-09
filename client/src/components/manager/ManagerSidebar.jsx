@@ -11,12 +11,7 @@ import {
 
 import { NavLink } from "react-router-dom";
 
-const ManagerSidebar = ({
-  isOpen,
-  onClose,
-  onLogout,
-  manager,
-}) => {
+const ManagerSidebar = ({ isOpen, onClose, onLogout, manager }) => {
   const navigation = [
     {
       name: "Dashboard",
@@ -35,24 +30,8 @@ const ManagerSidebar = ({
     },
   ];
 
-  const secondaryNavigation = [
-    {
-      name: "Reports",
-      path: "/manager/reports",
-      icon: BarChart3,
-    },
-    {
-      name: "Settings",
-      path: "/manager/settings",
-      icon: Settings,
-    },
-  ];
-
   // Get username safely
-  const username =
-    manager?.username ||
-    manager?.name ||
-    "Manager";
+  const username = manager?.username || manager?.name || "Manager";
 
   // Generate initials from username
   const initials = username
@@ -88,22 +67,14 @@ const ManagerSidebar = ({
           duration-300
           ease-in-out
           lg:translate-x-0
-          ${
-            isOpen
-              ? "translate-x-0"
-              : "-translate-x-full"
-          }
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         {/* Brand */}
         <div className="flex h-[84px] items-center justify-between border-b border-white/10 px-6">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/15">
-              <Users
-                size={24}
-                strokeWidth={2}
-                className="text-blue-400"
-              />
+              <Users size={24} strokeWidth={2} className="text-blue-400" />
             </div>
 
             <div>
@@ -159,12 +130,7 @@ const ManagerSidebar = ({
                 >
                   {({ isActive }) => (
                     <>
-                      <Icon
-                        size={19}
-                        strokeWidth={
-                          isActive ? 2.2 : 1.8
-                        }
-                      />
+                      <Icon size={19} strokeWidth={isActive ? 2.2 : 1.8} />
 
                       <span>{item.name}</span>
                     </>
@@ -173,62 +139,13 @@ const ManagerSidebar = ({
               );
             })}
           </nav>
-
-          {/* Secondary Navigation */}
-          <div className="mt-9">
-            <p className="mb-3 px-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-              Other
-            </p>
-
-            <nav className="space-y-2">
-              {secondaryNavigation.map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <NavLink
-                    key={item.path}
-                    to={item.path}
-                    onClick={onClose}
-                    className={({ isActive }) =>
-                      `
-                      flex
-                      items-center
-                      gap-3
-                      rounded-xl
-                      px-4
-                      py-3
-                      text-sm
-                      font-medium
-                      transition-all
-                      duration-200
-                      ${
-                        isActive
-                          ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                          : "text-slate-300 hover:bg-white/5 hover:text-white"
-                      }
-                      `
-                    }
-                  >
-                    <Icon
-                      size={19}
-                      strokeWidth={1.8}
-                    />
-
-                    <span>{item.name}</span>
-                  </NavLink>
-                );
-              })}
-            </nav>
-          </div>
         </div>
 
         {/* Manager Profile */}
         <div className="border-t border-white/10 p-3">
           <div className="rounded-2xl border border-white/10 bg-white/[0.04]">
-
             {/* Profile */}
             <div className="flex items-center gap-3 px-3 py-4">
-
               {/* Avatar */}
               <div className="relative shrink-0">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-semibold">
@@ -245,23 +162,16 @@ const ManagerSidebar = ({
                   {username}
                 </p>
 
-                <p className="mt-0.5 text-xs text-slate-400">
-                  Manager
-                </p>
+                <p className="mt-0.5 text-xs text-slate-400">Manager</p>
 
                 <div className="mt-1 flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
 
-                  <span className="text-[10px] text-slate-400">
-                    Online
-                  </span>
+                  <span className="text-[10px] text-slate-400">Online</span>
                 </div>
               </div>
 
-              <UserCircle
-                size={18}
-                className="text-slate-500"
-              />
+              <UserCircle size={18} className="text-slate-500" />
             </div>
 
             {/* Logout */}
@@ -283,15 +193,11 @@ const ManagerSidebar = ({
                   hover:text-red-400
                 "
               >
-                <LogOut
-                  size={18}
-                  strokeWidth={1.8}
-                />
+                <LogOut size={18} strokeWidth={1.8} />
 
                 <span>Logout</span>
               </button>
             </div>
-
           </div>
         </div>
       </aside>

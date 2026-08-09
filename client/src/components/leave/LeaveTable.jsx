@@ -1,7 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import EmptyState from "./EmptyState";
 import { useState } from "react";
+
+import EmptyState from "./EmptyState";
 import DocumentPreviewModal from "./DocumentPreviewModal";
 import LeaveTableRow from "./LeaveTableRow";
 
@@ -19,109 +20,172 @@ const LeaveTable = ({
 }) => {
   const [selectedDocument, setSelectedDocument] = useState(null);
 
-  const displayedLeaves = maxRows ? leaves.slice(0, maxRows) : leaves;
+  const displayedLeaves = maxRows
+    ? leaves.slice(0, maxRows)
+    : leaves;
 
-  // Loading state
+  // Loading
   if (loading) {
     return (
-      <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-        <p className="text-center text-slate-500">Loading leave history...</p>
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:rounded-3xl sm:p-8">
+        <div className="flex items-center justify-center py-10">
+          <p className="text-sm text-slate-500 sm:text-base">
+            Loading leave history...
+          </p>
+        </div>
       </section>
     );
   }
 
-  // Error state
+  // Error
   if (error) {
     return (
-      <section className="rounded-3xl border border-red-200 bg-white p-8 shadow-sm">
-        <p className="text-center text-red-500">{error}</p>
+      <section className="rounded-2xl border border-red-200 bg-white p-6 shadow-sm sm:rounded-3xl sm:p-8">
+        <div className="flex items-center justify-center py-10">
+          <p className="text-center text-sm text-red-500 sm:text-base">
+            {error}
+          </p>
+        </div>
       </section>
     );
   }
 
-  // Empty state
+  // Empty
   if (displayedLeaves.length === 0) {
     return (
-      <EmptyState
-        title={emptyTitle}
-        description={emptyDescription}
-        onButtonClick={onApplyLeave}
-      />
+      <section className="rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl">
+        <EmptyState
+          title={emptyTitle}
+          description={emptyDescription}
+          onApplyLeave={onApplyLeave}
+        />
+      </section>
     );
   }
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-      {showHeader && (
-        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-          <h2 className="text-2xl font-semibold text-slate-800">
-            Leave History
-          </h2>
+    <>
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl">
+        {/* Header */}
+        {showHeader && (
+          <div className="flex flex-col gap-3 border-b border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-5 lg:px-8">
+            <div>
+              <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">
+                Leave History
+              </h2>
 
-          {showViewAll && (
-            <Link
-              to="/leave-history"
-              className="
-                inline-flex
-                items-center
-                gap-2
-                rounded-xl
-                bg-blue-50
-                px-4
-                py-2
-                text-sm
-                font-medium
-                text-blue-600
-                transition-all
-                duration-200
-                hover:bg-blue-100
-              "
-            >
-              View All
-              <ArrowRight size={18} />
-            </Link>
-          )}
+              <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+                Your recent leave requests
+              </p>
+            </div>
+
+            {showViewAll && (
+              <Link
+                to="/leave-history"
+                className="
+                  inline-flex
+                  w-fit
+                  items-center
+                  gap-2
+                  rounded-xl
+                  bg-blue-50
+                  px-3
+                  py-2
+                  text-xs
+                  font-medium
+                  text-blue-600
+                  transition-all
+                  duration-200
+                  hover:bg-blue-100
+                  sm:px-4
+                  sm:text-sm
+                "
+              >
+                View All
+                <ArrowRight size={16} className="sm:size-[18px]" />
+              </Link>
+            )}
+          </div>
+        )}
+
+        {/* ========================= */}
+        {/* MOBILE VIEW */}
+        {/* ========================= */}
+
+        <div className="divide-y divide-slate-100 md:hidden">
+          {displayedLeaves.map((leave) => (
+            <LeaveTableRow
+              key={leave.id}
+              leave={leave}
+              showDocument={showDocument}
+              mobile
+              onViewDocument={(document) =>
+                setSelectedDocument(document)
+              }
+            />
+          ))}
         </div>
-      )}
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full">
-          <thead className="bg-slate-50">
-            <tr className="text-left text-sm font-semibold text-slate-500">
-              <th className="px-6 py-4">Leave Dates</th>
+        {/* ========================= */}
+        {/* DESKTOP / TABLET VIEW */}
+        {/* ========================= */}
 
-              <th className="px-6 py-4">Reason</th>
+        <div className="hidden overflow-x-auto md:block">
+          <table className="w-full min-w-[850px]">
+            <thead className="bg-slate-50">
+              <tr className="text-left text-sm font-semibold text-slate-500">
+                <th className="whitespace-nowrap px-5 py-4 lg:px-6">
+                  Leave Dates
+                </th>
 
-              <th className="px-6 py-4">Status</th>
+                <th className="whitespace-nowrap px-5 py-4 lg:px-6">
+                  Reason
+                </th>
 
-              <th className="px-6 py-4">Manager's Remarks</th>
+                <th className="whitespace-nowrap px-5 py-4 lg:px-6">
+                  Status
+                </th>
 
-              {showDocument && <th className="px-6 py-4">Document</th>}
+                <th className="whitespace-nowrap px-5 py-4 lg:px-6">
+                  Manager's Remarks
+                </th>
 
-              <th className="px-6 py-4">Applied On</th>
-            </tr>
-          </thead>
+                {showDocument && (
+                  <th className="whitespace-nowrap px-5 py-4 lg:px-6">
+                    Document
+                  </th>
+                )}
 
-          <tbody className="divide-y divide-slate-100">
-            {displayedLeaves.map((leave) => (
-              <LeaveTableRow
-                key={leave.id}
-                leave={leave}
-                showDocument={showDocument}
-                onViewDocument={(document) => setSelectedDocument(document)}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
+                <th className="whitespace-nowrap px-5 py-4 lg:px-6">
+                  Applied On
+                </th>
+              </tr>
+            </thead>
 
+            <tbody className="divide-y divide-slate-100">
+              {displayedLeaves.map((leave) => (
+                <LeaveTableRow
+                  key={leave.id}
+                  leave={leave}
+                  showDocument={showDocument}
+                  onViewDocument={(document) =>
+                    setSelectedDocument(document)
+                  }
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Document Preview */}
       <DocumentPreviewModal
         isOpen={!!selectedDocument}
         fileUrl={selectedDocument?.url}
         fileName={selectedDocument?.name}
         onClose={() => setSelectedDocument(null)}
       />
-    </section>
+    </>
   );
 };
 

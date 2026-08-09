@@ -29,18 +29,13 @@ const Dashboard = () => {
 
   const handleSubmitLeave = async (leaveData) => {
     await applyLeave(leaveData);
-
-    // Close modal after successful submission
     setOpenModal(false);
   };
 
   return (
-    <DashboardLayout
-      onApplyLeave={handleOpenLeaveModal}
-    >
-      <div className="space-y-8">
-
-        {/* Welcome Banner */}
+    <DashboardLayout onApplyLeave={handleOpenLeaveModal}>
+      <div className="space-y-6 sm:space-y-8">
+        {/* Welcome */}
         <WelcomeBanner />
 
         {/* Quick Actions */}
@@ -48,28 +43,29 @@ const Dashboard = () => {
           onApplyLeave={handleOpenLeaveModal}
         />
 
-        {/* Apply Leave Modal */}
-        <ApplyLeaveModal
-          open={openModal}
-          onClose={handleCloseLeaveModal}
-          onSubmitLeave={handleSubmitLeave}
-          submitting={submitting}
-        />
-
-        {/* Recent Leave Requests */}
-        <LeaveTable
-          leaves={leaves}
-          loading={loading}
-          error={error}
-          maxRows={3}
-          showHeader
-          showViewAll
-          emptyTitle="No Recent Leave Requests"
-          emptyDescription="Your recent leave requests will appear here once you submit one."
-          onApplyLeave={handleOpenLeaveModal}
-        />
-
+        {/* Leave Requests */}
+        <section className="min-w-0">
+          <LeaveTable
+            leaves={leaves}
+            loading={loading}
+            error={error}
+            maxRows={3}
+            showHeader
+            showViewAll
+            emptyTitle="No Recent Leave Requests"
+            emptyDescription="Your recent leave requests will appear here once you submit one."
+            onApplyLeave={handleOpenLeaveModal}
+          />
+        </section>
       </div>
+
+      {/* Modal */}
+      <ApplyLeaveModal
+        open={openModal}
+        onClose={handleCloseLeaveModal}
+        onSubmitLeave={handleSubmitLeave}
+        submitting={submitting}
+      />
     </DashboardLayout>
   );
 };
