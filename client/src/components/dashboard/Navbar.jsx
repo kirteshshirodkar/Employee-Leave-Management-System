@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, Menu } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
 const Navbar = ({ onMenuClick }) => {
@@ -20,16 +20,6 @@ const Navbar = ({ onMenuClick }) => {
 
       {/* Right Section */}
       <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
-        {/* Notification */}
-        <button
-          className="relative rounded-lg p-2 text-slate-600 transition hover:bg-slate-100"
-          aria-label="Notifications"
-        >
-          <Bell size={21} />
-
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-        </button>
-
         {/* User */}
         <button className="flex items-center gap-2 sm:gap-3">
           <div className="text-right">
@@ -41,11 +31,6 @@ const Navbar = ({ onMenuClick }) => {
               {user?.role || "Employee"}
             </p>
           </div>
-
-          <ChevronDown
-            size={18}
-            className="shrink-0 text-slate-500"
-          />
         </button>
       </div>
     </header>
