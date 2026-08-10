@@ -100,7 +100,7 @@ const RegisterForm = () => {
           name="username"
           value={formData.username}
           onChange={handleChange}
-          placeholder="John Doe"
+          placeholder="Create Username"
         />
 
         <PasswordInput

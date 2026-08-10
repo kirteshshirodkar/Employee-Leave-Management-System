@@ -108,7 +108,7 @@ const ManagerLoginForm = () => {
           name="username"
           value={formData.username}
           onChange={handleChange}
-          placeholder="manager@gcu.in"
+          placeholder="Enter Username"
         />
 
         <PasswordInput
