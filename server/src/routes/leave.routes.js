@@ -11,7 +11,11 @@ import protect from "../middleware/auth.middleware.js";
 import validate from "../middleware/validate.middleware.js";
 import { applyLeaveValidator } from "../validators/leave.validator.js";
 import upload from "../middleware/upload.middleware.js";
+import authorize from "../middleware/authorize.middleware.js";
 const router = express.Router();
+router.use(protect);
+router.use(authorize("EMPLOYEE"));
+
 
 // Apply for leave
 router.post(
@@ -27,7 +31,7 @@ router.post(
 router.get("/stats", protect, getLeaveStats);
 
 // Get logged-in employee leaves
-router.get("/", protect, getMyLeaves);
+router.get("/",protect , getMyLeaves);
 
 // Get single leave
 router.get("/:id", protect, getLeaveById);

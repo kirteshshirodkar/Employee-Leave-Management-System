@@ -7,12 +7,14 @@ const ApplyLeaveModal = ({
   onSubmitLeave,
   submitting = false,
 }) => {
+  
   return (
     <Modal
       open={open}
       onClose={onClose}
       title="Apply for Leave"
     >
+
       <LeaveForm
         onClose={onClose}
         onSubmitLeave={onSubmitLeave}

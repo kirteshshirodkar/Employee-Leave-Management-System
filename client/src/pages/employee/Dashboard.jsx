@@ -11,13 +11,7 @@ import useLeave from "../../hooks/useLeave";
 const Dashboard = () => {
   const [openModal, setOpenModal] = useState(false);
 
-  const {
-    leaves,
-    loading,
-    submitting,
-    error,
-    applyLeave,
-  } = useLeave();
+  const { leaves, loading, submitting, error, applyLeave } = useLeave();
 
   const handleOpenLeaveModal = () => {
     setOpenModal(true);
@@ -39,9 +33,7 @@ const Dashboard = () => {
         <WelcomeBanner />
 
         {/* Quick Actions */}
-        <QuickActions
-          onApplyLeave={handleOpenLeaveModal}
-        />
+        <QuickActions onApplyLeave={handleOpenLeaveModal} />
 
         {/* Leave Requests */}
         <section className="min-w-0">

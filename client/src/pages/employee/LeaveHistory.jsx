@@ -18,6 +18,7 @@ const LeaveHistory = () => {
     stats,
     loading,
     statsLoading,
+    error,
     fetchLeaves,
     fetchLeaveStats,
     submitLeave,
@@ -53,6 +54,7 @@ const LeaveHistory = () => {
         <LeaveTable
           leaves={leaves}
           loading={loading}
+          error={error}
           showHeader={false}
           showViewAll={false}
           showDocument={true}
